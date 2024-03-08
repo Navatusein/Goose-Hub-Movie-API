@@ -48,12 +48,12 @@ namespace MovieApi.Controllers
         [HttpGet]
         [Route("query")]
         [AllowAnonymous]
-        [SwaggerResponse(statusCode: 200, type: typeof(PreviewDto), description: "OK")]
+        [SwaggerResponse(statusCode: 200, type: typeof(List<PreviewDto>), description: "OK")]
         public async Task<IActionResult> GetQuery([FromBody] QueryDto query)
         {
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(PreviewDto));
+            // return StatusCode(200, default(List<PreviewDto>));
 
             throw new NotImplementedException();
         }
