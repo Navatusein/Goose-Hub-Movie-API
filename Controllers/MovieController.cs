@@ -22,15 +22,15 @@ namespace MovieApi.Controllers
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<MovieController>();
 
         private readonly IMapper _mapper;
-        private readonly MovieService _movieService;
+        private readonly MovieService _dataService;
 
         /// <summary>
-        /// 
+        /// Constructor
         /// </summary>
-        public MovieController(IMapper mapper, MovieService movieService)
+        public MovieController(IMapper mapper, MovieService dataService)
         {
             _mapper = mapper;
-            _movieService = movieService;
+            _dataService = dataService;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> Get([FromRoute(Name = "id")][Required] string id)
         {
-            var model = await _movieService.GetAsync(id);
+            var model = await _dataService.GetAsync(id);
 
             if (model == null)
                 return StatusCode(404, new ErrorDto("Movie not found", "404"));
@@ -69,7 +69,7 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 201, type: typeof(MovieDto), description: "Created")]
         public async Task<IActionResult> Post([FromBody] MovieDto movieDto)
         {
-            var model = await _movieService.CreateAsync(_mapper.Map<Movie>(movieDto));
+            var model = await _dataService.CreateAsync(_mapper.Map<Movie>(movieDto));
 
             return StatusCode(201, model);
         }
@@ -92,7 +92,7 @@ namespace MovieApi.Controllers
         public async Task<IActionResult> Put([FromRoute(Name = "id")][Required] string id, [FromBody] MovieDto movieDto)
         {
 
-            var model = await _movieService.UpdateAsync(id, _mapper.Map<Movie>(movieDto));
+            var model = await _dataService.UpdateAsync(id, _mapper.Map<Movie>(movieDto));
 
             if (model == null)
                 return StatusCode(404, new ErrorDto("Movie not found", "404"));
@@ -115,8 +115,7 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 200, description: "OK")]
         public async Task<IActionResult> Delete([FromRoute(Name = "id")][Required] string id)
         {
-
-            var isDeleted = await _movieService.DeleteAsync(id);
+            var isDeleted = await _dataService.DeleteAsync(id);
 
             if (!isDeleted)
                 return StatusCode(404, new ErrorDto("Movie not found", "404"));

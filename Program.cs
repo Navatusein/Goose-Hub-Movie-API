@@ -85,14 +85,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // Configure Automapper
 builder.Services.AddAutoMapper(typeof(AppMappingService));
-builder.Services.AddTransient<ScreenshotUrlResolver>();
+builder.Services.AddTransient<ImageUrlResolver>();
+builder.Services.AddTransient<ImageListUrlResolver>();
+builder.Services.AddTransient<ContentUrlResolver>();
 
-// Add MongoDbConnectionService
+// Add Minio Service
 builder.Services.AddSingleton<MinioService>();
 
-// Add MongoDbConnectionService
+// Add MongoDb Services
 builder.Services.AddSingleton<MongoDbConnectionService>();
+builder.Services.AddSingleton<AnimeService>();
 builder.Services.AddSingleton<MovieService>();
+builder.Services.AddSingleton<SerialService>();
+builder.Services.AddSingleton<FranchiseService>();
 
 var app = builder.Build();
 

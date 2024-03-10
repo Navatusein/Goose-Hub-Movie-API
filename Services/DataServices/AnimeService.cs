@@ -5,51 +5,51 @@ using MovieApi.Service;
 namespace MovieApi.Services.DataServices
 {
     /// <summary>
-    /// Movie MongoDB service
+    /// Anime MongoDB service
     /// </summary>
-    public class MovieService
+    public class AnimeService
     {
-        private readonly IMongoCollection<Movie> _collection;
+        private readonly IMongoCollection<Anime> _collection;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public MovieService(IConfiguration config, MongoDbConnectionService connectionService)
+        public AnimeService(IConfiguration config, MongoDbConnectionService connectionService)
         {
-            var movieCollectionName = config.GetSection("MongoDB:CollectionContentName").Get<string>();
+            var AnimeCollectionName = config.GetSection("MongoDB:CollectionContentName").Get<string>();
 
-            _collection = connectionService.Database.GetCollection<Movie>(movieCollectionName);
+            _collection = connectionService.Database.GetCollection<Anime>(AnimeCollectionName);
         }
 
         /// <summary>
-        /// Get Movie
+        /// Get Anime
         /// </summary>
-        public async Task<Movie> GetAsync(string id)
+        public async Task<Anime> GetAsync(string id)
         {
             var model = await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
             return model;
         }
 
         /// <summary>
-        /// Create Movie
+        /// Create Anime
         /// </summary>
-        public async Task<Movie> CreateAsync(Movie model)
+        public async Task<Anime> CreateAsync(Anime model)
         {
             await _collection.InsertOneAsync(model);
             return model;
         }
 
         /// <summary>
-        /// Update Movie
+        /// Update Anime
         /// </summary>
-        public async Task<Movie> UpdateAsync(string id, Movie model)
+        public async Task<Anime> UpdateAsync(string id, Anime model)
         {
             model = await _collection.FindOneAndReplaceAsync(x => x.Id == id, model, new() { ReturnDocument = ReturnDocument.After });
             return model;
         }
 
         /// <summary>
-        /// Delete Movie
+        /// Delete Anime
         /// </summary>
         public async Task<bool> DeleteAsync(string id)
         {

@@ -1,9 +1,12 @@
 ﻿using Amazon.Auth.AccessControlPolicy;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieApi.Dtos;
+using MovieApi.Models;
 using MovieApi.Service;
+using MovieApi.Services.DataServices;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
@@ -19,6 +22,18 @@ namespace MovieApi.Controllers
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<AnimeController>();
 
+        private readonly IMapper _mapper;
+        private readonly AnimeService _dataService;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public AnimeController(IMapper mapper, AnimeService dataService)
+        {
+            _mapper = mapper;
+            _dataService = dataService;
+        }
+
         /// <summary>
         /// Get Anime By Id
         /// </summary>
@@ -31,13 +46,14 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> Get([FromRoute(Name = "id")][Required] string id)
         {
+            var model = await _dataService.GetAsync(id);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(AnimeDto));
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404, default(ErrorDto));
+            if (model == null)
+                return StatusCode(404, new ErrorDto("Anime not found", "404"));
 
-            throw new NotImplementedException();
+            var dto = _mapper.Map<AnimeDto>(model);
+
+            return StatusCode(200, dto);
         }
 
         /// <summary>
@@ -52,11 +68,10 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 201, type: typeof(AnimeDto), description: "Created")]
         public async Task<IActionResult> Post([FromBody] AnimeDto animeDto)
         {
+            var model = await _dataService.CreateAsync(_mapper.Map<Anime>(animeDto));
+            var dto = _mapper.Map<AnimeDto>(model);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(201, default(AnimeDto));
-
-            throw new NotImplementedException();
+            return StatusCode(201, dto);
         }
 
         /// <summary>
@@ -75,13 +90,14 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> Put([FromRoute(Name = "id")][Required] string id, [FromBody] AnimeDto animeDto)
         {
+            var model = await _dataService.UpdateAsync(id, _mapper.Map<Anime>(animeDto));
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(AnimeDto));
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404, default(ErrorDto));
+            if (model == null)
+                return StatusCode(404, new ErrorDto("Anime not found", "404"));
 
-            throw new NotImplementedException();
+            var dto = _mapper.Map<AnimeDto>(model);
+
+            return StatusCode(200, dto);
         }
 
         /// <summary>
@@ -98,13 +114,12 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 200, description: "OK")]
         public async Task<IActionResult> Delete([FromRoute(Name = "id")][Required] string id)
         {
+            var isDeleted = await _dataService.DeleteAsync(id);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
+            if (!isDeleted)
+                return StatusCode(404, new ErrorDto("Anime not found", "404"));
 
-            throw new NotImplementedException();
+            return StatusCode(200);
         }
     }
 }

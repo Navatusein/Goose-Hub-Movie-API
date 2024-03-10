@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieApi.Dtos;
+using MovieApi.Models;
 using MovieApi.Service;
+using MovieApi.Services.DataServices;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
@@ -18,6 +21,18 @@ namespace MovieApi.Controllers
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<FranchiseController>();
 
+        private readonly IMapper _mapper;
+        private readonly FranchiseService _dataService;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public FranchiseController(IMapper mapper, FranchiseService dataService)
+        {
+            _mapper = mapper;
+            _dataService = dataService;
+        }
+
         /// <summary>
         /// Get Franchise By Id
         /// </summary>
@@ -30,13 +45,14 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> Get([FromRoute(Name = "id")][Required] string id)
         {
+            var model = await _dataService.GetAsync(id);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(FranchiseDto));
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404, default(ErrorDto));
+            if (model == null)
+                return StatusCode(404, new ErrorDto("Franchise not found", "404"));
 
-            throw new NotImplementedException();
+            var dto = _mapper.Map<FranchiseDto>(model);
+
+            return StatusCode(200, dto);
         }
 
         /// <summary>
@@ -52,11 +68,10 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 201, type: typeof(FranchiseDto), description: "Created")]
         public async Task<IActionResult> Post([FromBody] FranchiseDto franchiseDto)
         {
+            var model = await _dataService.CreateAsync(_mapper.Map<Franchise>(franchiseDto));
+            var dto = _mapper.Map<FranchiseDto>(model);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(201, default(FranchiseDto));
-
-            throw new NotImplementedException();
+            return StatusCode(201, dto);
         }
 
         /// <summary>
@@ -75,13 +90,14 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> Put([FromRoute(Name = "id")][Required] string id, [FromBody] FranchiseDto franchiseDto)
         {
+            var model = await _dataService.UpdateAsync(id, _mapper.Map<Franchise>(franchiseDto));
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(FranchiseDto));
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404, default(ErrorDto));
+            if (model == null)
+                return StatusCode(404, new ErrorDto("Franchise not found", "404"));
 
-            throw new NotImplementedException();
+            var dto = _mapper.Map<FranchiseDto>(model);
+
+            return StatusCode(200, dto);
         }
 
         /// <summary>
@@ -98,13 +114,12 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 200, description: "OK")]
         public async Task<IActionResult> Delete([FromRoute(Name = "id")][Required] string id)
         {
+            var isDeleted = await _dataService.DeleteAsync(id);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
+            if (!isDeleted)
+                return StatusCode(404, new ErrorDto("Franchise not found", "404"));
 
-            throw new NotImplementedException();
+            return StatusCode(200);
         }
     }
 }

@@ -5,51 +5,51 @@ using MovieApi.Service;
 namespace MovieApi.Services.DataServices
 {
     /// <summary>
-    /// Movie MongoDB service
+    /// Franchise MongoDB service
     /// </summary>
-    public class MovieService
+    public class FranchiseService
     {
-        private readonly IMongoCollection<Movie> _collection;
+        private readonly IMongoCollection<Franchise> _collection;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public MovieService(IConfiguration config, MongoDbConnectionService connectionService)
+        public FranchiseService(IConfiguration config, MongoDbConnectionService connectionService)
         {
-            var movieCollectionName = config.GetSection("MongoDB:CollectionContentName").Get<string>();
+            var FranchiseCollectionName = config.GetSection("MongoDB:CollectionFranchiseName").Get<string>();
 
-            _collection = connectionService.Database.GetCollection<Movie>(movieCollectionName);
+            _collection = connectionService.Database.GetCollection<Franchise>(FranchiseCollectionName);
         }
 
         /// <summary>
-        /// Get Movie
+        /// Get Franchise
         /// </summary>
-        public async Task<Movie> GetAsync(string id)
+        public async Task<Franchise> GetAsync(string id)
         {
             var model = await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
             return model;
         }
 
         /// <summary>
-        /// Create Movie
+        /// Create Franchise
         /// </summary>
-        public async Task<Movie> CreateAsync(Movie model)
+        public async Task<Franchise> CreateAsync(Franchise model)
         {
             await _collection.InsertOneAsync(model);
             return model;
         }
 
         /// <summary>
-        /// Update Movie
+        /// Update Franchise
         /// </summary>
-        public async Task<Movie> UpdateAsync(string id, Movie model)
+        public async Task<Franchise> UpdateAsync(string id, Franchise model)
         {
             model = await _collection.FindOneAndReplaceAsync(x => x.Id == id, model, new() { ReturnDocument = ReturnDocument.After });
             return model;
         }
 
         /// <summary>
-        /// Delete Movie
+        /// Delete Franchise
         /// </summary>
         public async Task<bool> DeleteAsync(string id)
         {

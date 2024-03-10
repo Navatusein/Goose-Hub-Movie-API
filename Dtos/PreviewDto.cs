@@ -14,6 +14,11 @@ namespace MovieApi.Dtos
         public string? Id { get; set; }
 
         /// <summary>
+        /// Gets or Sets FranchiseId
+        /// </summary>
+        public string? FranchiseId { get; set; }
+
+        /// <summary>
         /// Gets or Sets DataType
         /// </summary>
         [Required]
@@ -26,7 +31,7 @@ namespace MovieApi.Dtos
         public ContentTypeEnum ContentType { get; set; }
 
         /// <summary>
-        /// Gets or Sets PosterUrl
+        /// Gets or Sets PosterPath
         /// </summary>
         public string PosterPath { get; set; } = null!;
 
@@ -34,6 +39,16 @@ namespace MovieApi.Dtos
         /// Gets or Sets PosterUrl
         /// </summary>
         public string PosterUrl { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or Sets BannerPath
+        /// </summary>
+        public string BannerPath { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or Sets BannerUrl
+        /// </summary>
+        public string BannerUrl { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets Name

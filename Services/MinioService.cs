@@ -10,8 +10,8 @@ namespace MovieApi.Service
     {
         private readonly IMinioClient _minioClient;
 
+        private readonly string _imageBucket;
         private readonly string _contentBucket;
-        private readonly string _screenshotBucket;
 
         /// <summary>
         /// Constructor
@@ -24,9 +24,9 @@ namespace MovieApi.Service
             var accessKey = config.GetSection("MinIO:AccessKey").Get<string>();
             var secretKey = config.GetSection("MinIO:SecretKey").Get<string>();
 
+            _imageBucket = config.GetSection("MinIO:ImageBucket").Get<string>()!;
             _contentBucket = config.GetSection("MinIO:ContentBucket").Get<string>()!;
-            _screenshotBucket = config.GetSection("MinIO:ScreenshotBucket").Get<string>()!;
-
+            
             _minioClient = new MinioClient()
                 .WithEndpoint(endpoint)
                 .WithCredentials(accessKey, secretKey)
@@ -36,11 +36,8 @@ namespace MovieApi.Service
         }
 
         /// <summary>
-        /// 
+        /// Generate presigned url 
         /// </summary>
-        /// <param name="bucketName"></param>
-        /// <param name="objectPath"></param>
-        /// <returns></returns>
         public async Task<string> GetPresignedUrl(string bucketName, string objectPath)
         {
             var presignedGetObjectArgs = new PresignedGetObjectArgs()
@@ -54,23 +51,19 @@ namespace MovieApi.Service
         }
 
         /// <summary>
-        /// 
+        /// Generate presigned url for images
         /// </summary>
-        /// <param name="objectPath"></param>
-        /// <returns></returns>
-        public async Task<string> GetContentPresignedUrl(string objectPath)
+        public async Task<string> GetImagePresignedUrl(string objectPath)
         {
-            return await GetPresignedUrl(_contentBucket, objectPath);
+            return await GetPresignedUrl(_imageBucket, objectPath);
         }
 
         /// <summary>
-        /// 
+        /// Generate presigned url for content
         /// </summary>
-        /// <param name="objectPath"></param>
-        /// <returns></returns>
-        public async Task<string> GetScreenshoPresignedUrl(string objectPath)
+        public async Task<string> GetContentPresignedUrl(string objectPath)
         {
-            return await GetPresignedUrl(_screenshotBucket, objectPath);
+            return await GetPresignedUrl(_contentBucket, objectPath);
         }
     }
 }

@@ -95,6 +95,12 @@ namespace MovieApi.Models
         public string? Id { get; set; }
 
         /// <summary>
+        /// Gets or Sets FranchiseId
+        /// </summary>
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? FranchiseId { get; set; }
+
+        /// <summary>
         /// Gets or Sets DataType
         /// </summary>
         [Required]
@@ -107,10 +113,16 @@ namespace MovieApi.Models
         public ContentTypeEnum ContentType { get; set; }
 
         /// <summary>
-        /// Gets or Sets PosterUrl
+        /// Gets or Sets PosterPath
         /// </summary>
         [Required]
         public string PosterPath { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or Sets BannerPath
+        /// </summary>
+        [Required]
+        public string BannerPath { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets Name

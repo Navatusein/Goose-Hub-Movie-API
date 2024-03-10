@@ -16,19 +16,20 @@ namespace MovieApi.AppMapping
         public AppMappingService()
         {
             CreateMap<Preview, PreviewDto>()
-                .ForMember(dest => dest.PosterUrl, opt => opt.MapFrom<UrlResolver, string>(src => src.PosterPath))
+                .ForMember(dest => dest.PosterUrl, opt => opt.MapFrom<ImageUrlResolver, string>(src => src.PosterPath))
+                .ForMember(dest => dest.BannerUrl, opt => opt.MapFrom<ImageUrlResolver, string>(src => src.BannerPath))
                 .ReverseMap();
 
             CreateMap<Anime, AnimeDto>()
-                .ForMember(dest => dest.ScreenshotUrls, opt => opt.MapFrom<ListUrlResolver, List<string>>(src => src.ScreenshotPath))
+                .ForMember(dest => dest.ScreenshotUrls, opt => opt.MapFrom<ImageListUrlResolver, List<string>>(src => src.ScreenshotPath))
                 .ReverseMap();
 
             CreateMap<Movie, MovieDto>()
-                .ForMember(dest => dest.ScreenshotUrls, opt => opt.MapFrom<ListUrlResolver, List<string>>(src => src.ScreenshotPath))
+                .ForMember(dest => dest.ScreenshotUrls, opt => opt.MapFrom<ImageListUrlResolver, List<string>>(src => src.ScreenshotPath))
                 .ReverseMap();
 
             CreateMap<Serial, SerialDto>()
-                .ForMember(dest => dest.ScreenshotUrls, opt => opt.MapFrom<ListUrlResolver, List<string>>(src => src.ScreenshotPath))
+                .ForMember(dest => dest.ScreenshotUrls, opt => opt.MapFrom<ImageListUrlResolver, List<string>>(src => src.ScreenshotPath))
                 .ReverseMap();
 
             CreateMap<Season, SeasonDto>().ReverseMap();
@@ -36,7 +37,7 @@ namespace MovieApi.AppMapping
             CreateMap<Episode, EpisodeDto>().ReverseMap();
 
             CreateMap<Content, ContentDto>()
-                .ForMember(dest => dest.Url, opt => opt.MapFrom<UrlResolver, string>(src => src.Path))
+                .ForMember(dest => dest.Url, opt => opt.MapFrom<ContentUrlResolver, string>(src => src.Path))
                 .ReverseMap();
         }
     }

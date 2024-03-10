@@ -8,18 +8,18 @@ using MovieApi.Services.DataServices;
 namespace MovieApi.AppMapping
 {
     /// <summary>
-    /// ScreenshotUrlResolver
+    /// UrlResolver
     /// </summary>
-    public class ScreenshotUrlResolver : IMemberValueResolver<object, object, List<string>, List<string>>
+    public class ImageListUrlResolver : IMemberValueResolver<object, object, List<string>, List<string>>
     {
-        private static Serilog.ILogger Logger => Serilog.Log.ForContext<ScreenshotUrlResolver>();
+        private static Serilog.ILogger Logger => Serilog.Log.ForContext<ImageListUrlResolver>();
 
         private readonly MinioService _minioService;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public ScreenshotUrlResolver(MinioService minioService)
+        public ImageListUrlResolver(MinioService minioService)
         {
             _minioService = minioService;
         }
@@ -29,7 +29,7 @@ namespace MovieApi.AppMapping
         /// </summary>
         public List<string> Resolve(object source, object destination, List<string> sourceMember, List<string> destMember, ResolutionContext context)
         {
-            return sourceMember.Select(x => _minioService.GetScreenshoPresignedUrl(x).Result).ToList();
+            return sourceMember.Select(x => _minioService.GetImagePresignedUrl(x).Result).ToList();
         }
     }
 }
