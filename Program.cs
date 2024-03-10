@@ -7,6 +7,9 @@ using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
 using System.Text;
+using MovieApi.Services.DataServices;
+using MovieApi.AppMapping;
+using System.Xml;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,8 +83,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// Configure Automapper
+builder.Services.AddAutoMapper(typeof(AppMappingService));
+builder.Services.AddTransient<ScreenshotUrlResolver>();
+
+// Add MongoDbConnectionService
+builder.Services.AddSingleton<MinioService>();
+
 // Add MongoDbConnectionService
 builder.Services.AddSingleton<MongoDbConnectionService>();
+builder.Services.AddSingleton<MovieService>();
 
 var app = builder.Build();
 

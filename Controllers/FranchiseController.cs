@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MovieApi.Dto;
+using MovieApi.Dtos;
 using MovieApi.Service;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
@@ -47,7 +47,8 @@ namespace MovieApi.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [SwaggerResponse(statusCode: 201, type: typeof(FranchiseDto), description: "Created")]
         public async Task<IActionResult> Post([FromBody] FranchiseDto franchiseDto)
         {
@@ -94,7 +95,7 @@ namespace MovieApi.Controllers
         [HttpDelete]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        [SwaggerOperation("DeleteFranchiseFranchiseId")]
+        [SwaggerResponse(statusCode: 200, description: "OK")]
         public async Task<IActionResult> Delete([FromRoute(Name = "id")][Required] string id)
         {
 

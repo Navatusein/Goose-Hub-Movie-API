@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 
-namespace MovieApi.Dto
+namespace MovieApi.Models
 {
     /// <summary>
     /// Anime type enum
@@ -39,7 +39,7 @@ namespace MovieApi.Dto
     /// <summary>
     /// Model for anime
     /// </summary>
-    public class AnimeDto : PreviewDto
+    public class Anime : Preview
     {
         /// <summary>
         /// Gets or Sets Time
@@ -53,14 +53,9 @@ namespace MovieApi.Dto
         public string TrailerUrl { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets Screenshots
+        /// Gets or Sets ScreenshotPath
         /// </summary>
-        public List<string> Screenshots { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or Sets ScreenshotIds
-        /// </summary>
-        public List<string> ScreenshotIds { get; set; } = null!;
+        public List<string> ScreenshotPath { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets Type
@@ -75,18 +70,13 @@ namespace MovieApi.Dto
         public string Studio { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets MovieUrl
+        /// Gets or Sets Content
         /// </summary>
-        public string MovieUrl { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or Sets MovieId
-        /// </summary>
-        public string MovieId { get; set; } = null!;
+        public List<Content>? Content { get; set; }
 
         /// <summary>
         /// Gets or Sets Episodes
         /// </summary>
-        public List<EpisodeDto> Episodes { get; set; } = null!;
+        public List<Episode>? Episodes { get; set; }
     }
 }

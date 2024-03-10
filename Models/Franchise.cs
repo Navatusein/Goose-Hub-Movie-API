@@ -1,19 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 
-namespace MovieApi.Dto
+namespace MovieApi.Models
 {
     /// <summary>
     /// Model for franchise
     /// </summary>
-    public class FranchiseDto
+    public class Franchise
     {
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [Required]
-        public string Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Name

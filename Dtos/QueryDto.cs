@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MovieApi.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace MovieApi.Dto
+namespace MovieApi.Dtos
 {
     /// <summary>
     /// Sort param enum

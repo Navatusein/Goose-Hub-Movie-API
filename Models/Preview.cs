@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml.Linq;
 
-namespace MovieApi.Dto
+namespace MovieApi.Models
 {
     /// <summary>
     /// Content status enum
@@ -83,13 +85,14 @@ namespace MovieApi.Dto
     /// <summary>
     /// Parent model for anime, serial, movie
     /// </summary>
-    public class PreviewDto
+    public class Preview
     {
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [Required]
-        public string Id { get; set; } = null!;
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets DataType
@@ -107,7 +110,7 @@ namespace MovieApi.Dto
         /// Gets or Sets PosterUrl
         /// </summary>
         [Required]
-        public string PosterUrl { get; set; } = null!;
+        public string PosterPath { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets Name

@@ -2,12 +2,12 @@
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 
-namespace MovieApi.Dto
+namespace MovieApi.Models
 {
     /// <summary>
-    /// Model for movies
+    /// Model for serial
     /// </summary>
-    public class MovieDto : PreviewDto
+    public class Serial : Preview
     {
         /// <summary>
         /// Gets or Sets Time
@@ -22,23 +22,26 @@ namespace MovieApi.Dto
         public string TrailerUrl { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets Screenshots
+        /// Gets or Sets ScreenshotPath
         /// </summary>
-        public List<string> Screenshots { get; set; } = null!;
+        public List<string> ScreenshotPath { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets ScreenshotIds
+        /// Gets or Sets EpisodesCount
         /// </summary>
-        public List<string> ScreenshotIds { get; set; } = null!;
+        [Required]
+        public string EpisodesCount { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets MovieUrl
+        /// Gets or Sets NextEpisodeDate
         /// </summary>
-        public string MovieUrl { get; set; } = null!;
+        [Required]
+        public DateTime NextEpisodeDate { get; set; }
 
         /// <summary>
-        /// Gets or Sets MovieId
+        /// Gets or Sets Seasons
         /// </summary>
-        public string MovieId { get; set; } = null!;
+        [Required]
+        public List<Season> Seasons { get; set; } = null!;
     }
 }

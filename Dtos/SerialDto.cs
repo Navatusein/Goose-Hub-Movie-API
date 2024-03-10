@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
-using System.Xml.Linq;
 
-namespace MovieApi.Dto
+namespace MovieApi.Dtos
 {
     /// <summary>
     /// Model for serial
@@ -22,14 +20,14 @@ namespace MovieApi.Dto
         public string TrailerUrl { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets Screenshots
+        /// Gets or Sets ScreenshotUrls
         /// </summary>
-        public List<string> Screenshots { get; set; } = null!;
+        public List<string> ScreenshotUrls { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets ScreenshotIds
+        /// Gets or Sets ScreenshotPath
         /// </summary>
-        public List<string> ScreenshotIds { get; set; } = null!;
+        public List<string> ScreenshotPath { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets EpisodesCount

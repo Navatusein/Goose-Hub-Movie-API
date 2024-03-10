@@ -1,19 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 
-namespace MovieApi.Dto
+namespace MovieApi.Models
 {
     /// <summary>
     /// Model for serial season
     /// </summary>
-    public class SeasonDto
+    public class Season
     {
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [Required]
-        public string Id { get; set; } = null!;
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -29,6 +32,6 @@ namespace MovieApi.Dto
         /// <summary>
         /// Gets or Sets Episodes
         /// </summary>
-        public List<EpisodeDto> Episodes { get; set; } = null!;
+        public List<Episode> Episodes { get; set; } = null!;
     }
 }

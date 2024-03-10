@@ -1,4 +1,4 @@
-﻿using MovieApi.Dto;
+﻿using MovieApi.Dtos;
 using System.Net;
 using System.Text.Json;
 
@@ -41,10 +41,7 @@ namespace MovieApi.Middleware
 
             var response = context.Response;
 
-            var errorDto = new ErrorDto()
-            {
-                Id = Guid.NewGuid().ToString()
-            };
+            var errorDto = new ErrorDto();
 
             Logger.Error(exception, "Handle Exception");
 

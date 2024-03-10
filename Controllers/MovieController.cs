@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MovieApi.Dto;
+using MovieApi.Dtos;
+using MovieApi.Models;
 using MovieApi.Service;
+using MovieApi.Services.DataServices;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
@@ -18,6 +21,18 @@ namespace MovieApi.Controllers
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<MovieController>();
 
+        private readonly IMapper _mapper;
+        private readonly MovieService _movieService;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public MovieController(IMapper mapper, MovieService movieService)
+        {
+            _mapper = mapper;
+            _movieService = movieService;
+        }
+
         /// <summary>
         /// Get Movie By Id
         /// </summary>
@@ -26,17 +41,19 @@ namespace MovieApi.Controllers
         /// <response code="404">Not Found</response>
         [HttpGet]
         [Route("{id}")]
+        [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(MovieDto), description: "OK")]
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> Get([FromRoute(Name = "id")][Required] string id)
         {
+            var model = await _movieService.GetAsync(id);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(MovieDto));
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404, default(ErrorDto));
+            if (model == null)
+                return StatusCode(404, new ErrorDto("Movie not found", "404"));
 
-            throw new NotImplementedException();
+            var dto = _mapper.Map<MovieDto>(model);
+
+            return StatusCode(200, dto);
         }
 
         /// <summary>
@@ -47,15 +64,14 @@ namespace MovieApi.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [SwaggerResponse(statusCode: 201, type: typeof(MovieDto), description: "Created")]
         public async Task<IActionResult> Post([FromBody] MovieDto movieDto)
         {
+            var model = await _movieService.CreateAsync(_mapper.Map<Movie>(movieDto));
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(201, default(MovieDto));
-
-            throw new NotImplementedException();
+            return StatusCode(201, model);
         }
 
         /// <summary>
@@ -69,18 +85,19 @@ namespace MovieApi.Controllers
         /// <response code="404">Not Found</response>
         [HttpPut]
         [Route("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(MovieDto), description: "OK")]
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> Put([FromRoute(Name = "id")][Required] string id, [FromBody] MovieDto movieDto)
         {
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(MovieDto));
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404, default(ErrorDto));
+            var model = await _movieService.UpdateAsync(id, _mapper.Map<Movie>(movieDto));
 
-            throw new NotImplementedException();
+            if (model == null)
+                return StatusCode(404, new ErrorDto("Movie not found", "404"));
+
+            return StatusCode(200, model);
         }
 
         /// <summary>
@@ -93,16 +110,18 @@ namespace MovieApi.Controllers
         /// <response code="404">Not Found</response>
         [HttpDelete]
         [Route("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [AllowAnonymous]
+        [SwaggerResponse(statusCode: 200, description: "OK")]
         public async Task<IActionResult> Delete([FromRoute(Name = "id")][Required] string id)
         {
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
+            var isDeleted = await _movieService.DeleteAsync(id);
 
-            throw new NotImplementedException();
+            if (!isDeleted)
+                return StatusCode(404, new ErrorDto("Movie not found", "404"));
+
+            return StatusCode(200);
         }
     }
 }

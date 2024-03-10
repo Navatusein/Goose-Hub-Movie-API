@@ -8,7 +8,6 @@ namespace MovieApi.Service
     public class MongoDbConnectionService
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<MongoDbConnectionService>();
-        private readonly IConfiguration _config;
 
         /// <summary>
         /// Gets or private Sets Client
@@ -25,10 +24,8 @@ namespace MovieApi.Service
         /// </summary>
         public MongoDbConnectionService(IConfiguration config)
         {
-            _config = config;
-
-            var connectionString = _config.GetSection("MongoDB:ConnectionURI").Value;
-            var databaseName = _config.GetSection("MongoDB:DatabaseName").Value;
+            var connectionString = config.GetSection("MongoDB:ConnectionURI").Get<string>();
+            var databaseName = config.GetSection("MongoDB:DatabaseName").Get<string>();
 
             Client = new MongoClient(connectionString);
             Database = Client.GetDatabase(databaseName);

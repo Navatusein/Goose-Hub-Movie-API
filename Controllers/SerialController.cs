@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MovieApi.Dto;
+using MovieApi.Dtos;
 using MovieApi.Service;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
@@ -94,6 +94,7 @@ namespace MovieApi.Controllers
         [HttpDelete]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
+        [SwaggerResponse(statusCode: 200, description: "OK")]
         public async Task<IActionResult> Delete([FromRoute(Name = "id")][Required] string id)
         {
 

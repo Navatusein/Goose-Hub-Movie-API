@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
-using System.Xml.Linq;
 
-namespace MovieApi.Dto
+namespace MovieApi.Dtos
 {
     /// <summary>
     /// Model for serial season or anime episode
@@ -27,15 +25,8 @@ namespace MovieApi.Dto
         public string Name { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets EpisodeUrl
+        /// Gets or Sets Content
         /// </summary>
-        [Required]
-        public string EpisodeUrl { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or Sets EpisodeId
-        /// </summary>
-        [Required]
-        public string EpisodeId { get; set; } = null!;
+        public List<ContentDto>? Content { get; set; }
     }
 }
