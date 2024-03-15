@@ -16,8 +16,8 @@ namespace MovieApi.AppMapping
         public AppMappingService()
         {
             CreateMap<Preview, PreviewDto>()
-                .ForMember(dest => dest.PosterUrl, opt => opt.MapFrom<ImageUrlResolver, string>(src => src.PosterPath))
-                .ForMember(dest => dest.BannerUrl, opt => opt.MapFrom<ImageUrlResolver, string>(src => src.BannerPath))
+                .ForMember(dest => dest.PosterUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.PosterPath))
+                .ForMember(dest => dest.BannerUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.BannerPath))
                 .ReverseMap();
 
             CreateMap<Anime, AnimeDto>()

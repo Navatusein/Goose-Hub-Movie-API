@@ -16,9 +16,9 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public FranchiseService(IConfiguration config, MongoDbConnectionService connectionService)
         {
-            var FranchiseCollectionName = config.GetSection("MongoDB:CollectionFranchiseName").Get<string>();
+            var collectionName = config.GetSection("MongoDB:CollectionFranchiseName").Get<string>();
 
-            _collection = connectionService.Database.GetCollection<Franchise>(FranchiseCollectionName);
+            _collection = connectionService.Database.GetCollection<Franchise>(collectionName);
         }
 
         /// <summary>

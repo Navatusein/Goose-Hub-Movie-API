@@ -16,9 +16,9 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public SerialService(IConfiguration config, MongoDbConnectionService connectionService)
         {
-            var SerialCollectionName = config.GetSection("MongoDB:CollectionContentName").Get<string>();
+            var collectionName = config.GetSection("MongoDB:CollectionContentName").Get<string>();
 
-            _collection = connectionService.Database.GetCollection<Serial>(SerialCollectionName);
+            _collection = connectionService.Database.GetCollection<Serial>(collectionName);
         }
 
         /// <summary>

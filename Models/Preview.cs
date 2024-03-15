@@ -85,6 +85,8 @@ namespace MovieApi.Models
     /// <summary>
     /// Parent model for anime, serial, movie
     /// </summary>
+    [BsonDiscriminator(RootClass = true)]
+    [BsonKnownTypes(typeof(Movie), typeof(Anime), typeof(Serial))]
     public class Preview
     {
         /// <summary>
@@ -115,14 +117,12 @@ namespace MovieApi.Models
         /// <summary>
         /// Gets or Sets PosterPath
         /// </summary>
-        [Required]
-        public string PosterPath { get; set; } = null!;
+        public string? PosterPath { get; set; }
 
         /// <summary>
         /// Gets or Sets BannerPath
         /// </summary>
-        [Required]
-        public string BannerPath { get; set; } = null!;
+        public string? BannerPath { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -146,7 +146,7 @@ namespace MovieApi.Models
         /// Gets or Sets Release
         /// </summary>
         [Required]
-        public DateTime Release { get; set; }
+        public DateOnly Release { get; set; }
 
         /// <summary>
         /// Gets or Sets AgeRestriction

@@ -17,12 +17,6 @@ namespace MovieApi.Dtos
     public class QueryDto
     {
         /// <summary>
-        /// Gets or Sets Genres
-        /// </summary>
-        [Required]
-        public List<string> Genres { get; set; } = null!;
-
-        /// <summary>
         /// Gets or Sets Page
         /// </summary>
         [Required]
@@ -35,22 +29,33 @@ namespace MovieApi.Dtos
         public int PageSize { get; set; }
 
         /// <summary>
-        /// Gets or Sets Query
+        /// Gets or Sets Genres
         /// </summary>
-        [Required]
-        public string Query { get; set; } = null!;
+        public List<string> Genres { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets Query
         /// </summary>
-        [Required]
-        public SortParam Sort { get; set; }
+        public string? Query { get; set; } = null!;
 
+        /// <summary>
+        /// Gets or Sets PageSize
+        /// </summary>
+        public int? YearStart { get; set; }
+
+        /// <summary>
+        /// Gets or Sets PageSize
+        /// </summary>
+        public int? YearEnd { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Query
+        /// </summary>
+        public SortParam? Sort { get; set; }
 
         /// <summary>
         /// Gets or Sets ContentType
         /// </summary>
-        [Required]
-        public ContentTypeEnum ContentType { get; set; }
+        public ContentTypeEnum? ContentType { get; set; }
     }
 }

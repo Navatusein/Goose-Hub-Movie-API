@@ -10,7 +10,7 @@ namespace MovieApi.AppMapping
     /// <summary>
     /// UrlResolver
     /// </summary>
-    public class ImageUrlResolver : IMemberValueResolver<object, object, string, string>
+    public class ImageUrlResolver : IMemberValueResolver<object, object, string?, string?>
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<ImageUrlResolver>();
 
@@ -27,8 +27,11 @@ namespace MovieApi.AppMapping
         /// <summary>
         /// Resolve
         /// </summary>
-        public string Resolve(object source, object destination, string sourceMember, string destMember, ResolutionContext context)
+        public string? Resolve(object source, object destination, string? sourceMember, string? destMember, ResolutionContext context)
         {
+            if (sourceMember == null)
+                return null;
+
             return _minioService.GetImagePresignedUrl(sourceMember).Result;
         }
     }

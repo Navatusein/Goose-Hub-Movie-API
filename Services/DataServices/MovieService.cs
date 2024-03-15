@@ -16,9 +16,9 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public MovieService(IConfiguration config, MongoDbConnectionService connectionService)
         {
-            var movieCollectionName = config.GetSection("MongoDB:CollectionContentName").Get<string>();
+            var collectionName = config.GetSection("MongoDB:CollectionContentName").Get<string>();
 
-            _collection = connectionService.Database.GetCollection<Movie>(movieCollectionName);
+            _collection = connectionService.Database.GetCollection<Movie>(collectionName);
         }
 
         /// <summary>

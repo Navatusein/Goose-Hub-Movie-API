@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieApi.Service;
+using MovieApi.Services.DataServices;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
 
@@ -15,6 +17,16 @@ namespace MovieApi.Controllers
     public class InfoController : ControllerBase
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<InfoController>();
+      
+        private readonly CommonService _dataService;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public InfoController(CommonService dataService)
+        {
+            _dataService = dataService;
+        }
 
         /// <summary>
         /// Get Directed By
@@ -25,13 +37,11 @@ namespace MovieApi.Controllers
         [Route("directed-by")]
         [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(List<string>), description: "OK")]
-        public async Task<IActionResult> GetInfoDirectedBy([FromBody] string query)
+        public async Task<IActionResult> GetInfoDirectedBy([FromQuery] string query)
         {
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(List<string>));
-
-            throw new NotImplementedException();
+            var list = await _dataService.GetDirectedByAsync(query);
+            return StatusCode(200, list);
         }
 
         /// <summary>
@@ -44,10 +54,8 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(List<string>), description: "OK")]
         public async Task<IActionResult> GetInfoGenres()
         {
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(List<string>));
-
-            throw new NotImplementedException();
+            var list = await _dataService.GetGenresAsync();
+            return StatusCode(200, list);
         }
 
         /// <summary>
@@ -57,14 +65,11 @@ namespace MovieApi.Controllers
         [HttpGet]
         [Route("years")]
         [AllowAnonymous]
-        [SwaggerResponse(statusCode: 200, type: typeof(List<string>), description: "OK")]
+        [SwaggerResponse(statusCode: 200, type: typeof(List<int>), description: "OK")]
         public async Task<IActionResult> GetInfoYears()
         {
-
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(List<string>));
-
-            throw new NotImplementedException();
+            var list = await _dataService.GetYearsAsync();
+            return StatusCode(200, list);
         }
     }
 }

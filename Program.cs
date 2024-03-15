@@ -98,6 +98,7 @@ builder.Services.AddSingleton<AnimeService>();
 builder.Services.AddSingleton<MovieService>();
 builder.Services.AddSingleton<SerialService>();
 builder.Services.AddSingleton<FranchiseService>();
+builder.Services.AddSingleton<CommonService>();
 
 var app = builder.Build();
 

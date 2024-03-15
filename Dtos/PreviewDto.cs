@@ -33,22 +33,22 @@ namespace MovieApi.Dtos
         /// <summary>
         /// Gets or Sets PosterPath
         /// </summary>
-        public string PosterPath { get; set; } = null!;
+        public string? PosterPath { get; set; }
 
         /// <summary>
         /// Gets or Sets PosterUrl
         /// </summary>
-        public string PosterUrl { get; set; } = null!;
+        public string? PosterUrl { get; set; }
 
         /// <summary>
         /// Gets or Sets BannerPath
         /// </summary>
-        public string BannerPath { get; set; } = null!;
+        public string? BannerPath { get; set; }
 
         /// <summary>
         /// Gets or Sets BannerUrl
         /// </summary>
-        public string BannerUrl { get; set; } = null!;
+        public string? BannerUrl { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -72,7 +72,7 @@ namespace MovieApi.Dtos
         /// Gets or Sets Release
         /// </summary>
         [Required]
-        public DateTime Release { get; set; }
+        public DateOnly Release { get; set; }
 
         /// <summary>
         /// Gets or Sets AgeRestriction
