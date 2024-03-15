@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using MovieApi.Dtos;
 using MovieApi.Models;
 using MovieApi.Service;
@@ -11,6 +12,8 @@ namespace MovieApi.Services.DataServices
     /// </summary>
     public class CommonService
     {
+        private static Serilog.ILogger Logger => Serilog.Log.ForContext<CommonService>();
+
         private readonly IMongoCollection<Preview> _collection;
 
         /// <summary>
@@ -37,7 +40,7 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public async Task<List<string>> GetDirectedByAsync(string query)
         {
-            var filter = Builders<Preview>.Filter.Regex("DirectedBy", new MongoDB.Bson.BsonRegularExpression(query, "i"));
+            var filter = Builders<Preview>.Filter.Regex("DirectedBy", new BsonRegularExpression(query, "i"));
 
             var result = await _collection.Distinct(new StringFieldDefinition<Preview, string>("DirectedBy"), filter)
                 .ToListAsync();
@@ -77,7 +80,7 @@ namespace MovieApi.Services.DataServices
             };
 
             if (queryDto.Query != null)
-                filters.Add(filterBuilder.Regex("Name", new MongoDB.Bson.BsonRegularExpression(queryDto.Query, "i")));
+                filters.Add(filterBuilder.Regex("Name", new BsonRegularExpression(queryDto.Query, "i")));
 
             if (queryDto.Genres.Count != 0)
                 filters.Add(filterBuilder.All("Genres", queryDto.Genres));

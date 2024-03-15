@@ -20,12 +20,14 @@ namespace MovieApi.Dtos
         /// Gets or Sets Page
         /// </summary>
         [Required]
+        [Range(1, Int32.MaxValue)]
         public int Page { get; set; }
 
         /// <summary>
         /// Gets or Sets PageSize
         /// </summary>
         [Required]
+        [Range(1, Int32.MaxValue)]
         public int PageSize { get; set; }
 
         /// <summary>

@@ -40,7 +40,7 @@ builder.Services.AddSwaggerGen(options =>
         },
         License = new OpenApiLicense
         {
-            Name = "NoLicense",
+            Name = "Mit License",
             Url = new Uri("https://github.com/Navatusein/Goose-Hub-Movie-API/blob/main/LICENSE")
         },
         Version = "v1",

@@ -8,6 +8,8 @@ namespace MovieApi.Service
     /// </summary>
     public class MinioService
     {
+        private static Serilog.ILogger Logger => Serilog.Log.ForContext<MinioService>();
+
         private readonly IMinioClient _minioClient;
 
         private readonly string _imageBucket;

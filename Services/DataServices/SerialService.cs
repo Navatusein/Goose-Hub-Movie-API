@@ -9,7 +9,7 @@ namespace MovieApi.Services.DataServices
     /// </summary>
     public class SerialService
     {
-        private readonly IMongoCollection<Serial> _collection;
+        private readonly IMongoCollection<SerialService> _collection;
 
         /// <summary>
         /// Constructor

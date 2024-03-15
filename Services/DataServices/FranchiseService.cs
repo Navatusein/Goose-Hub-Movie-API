@@ -9,6 +9,8 @@ namespace MovieApi.Services.DataServices
     /// </summary>
     public class FranchiseService
     {
+        private static Serilog.ILogger Logger => Serilog.Log.ForContext<FranchiseService>();
+
         private readonly IMongoCollection<Franchise> _collection;
 
         /// <summary>
