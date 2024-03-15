@@ -9,7 +9,9 @@ namespace MovieApi.Services.DataServices
     /// </summary>
     public class SerialService
     {
-        private readonly IMongoCollection<SerialService> _collection;
+        private static Serilog.ILogger Logger => Serilog.Log.ForContext<SerialService>();
+
+        private readonly IMongoCollection<Serial> _collection;
 
         /// <summary>
         /// Constructor
