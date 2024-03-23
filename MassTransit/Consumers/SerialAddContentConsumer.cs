@@ -34,7 +34,7 @@ namespace MovieApi.MassTransit.Consumers
                 Quality = message.Quality
             };
 
-            await _dataService.AddEpisodeContentAsync(message.EpisodeId, );
+            await _dataService.AddEpisodeContentAsync(message.EpisodeId, content);
         }
     }
 }
