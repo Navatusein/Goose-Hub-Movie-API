@@ -45,7 +45,8 @@ namespace MovieApi.AppMapping
                 .ForMember(dest => dest.Url, opt => opt.MapFrom<ContentUrlResolver, string>(src => src.Path))
                 .ReverseMap();
 
-            CreateMap<Franchise, FranchiseDto>().ReverseMap();
+            CreateMap<Franchise, FranchiseDto>()
+                .ReverseMap();
         }
     }
 }

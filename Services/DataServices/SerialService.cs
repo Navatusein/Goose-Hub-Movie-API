@@ -1,4 +1,6 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.AspNetCore.Http;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using MovieApi.Models;
 using MovieApi.Service;
 
@@ -65,6 +67,31 @@ namespace MovieApi.Services.DataServices
             var filter = Builders<Serial>.Filter.Eq("Id", id);
             var model = await _collection.FindOneAndDeleteAsync(filter);
             return model != null;
+        }
+
+        /// <summary>
+        /// Add Content To Episode
+        /// </summary>
+        public async Task<bool> AddEpisodeContentAsync(string id, Content content)
+        {
+            var filter = Builders<Serial>.Filter.ElemMatch("Seasons.Episodes", Builders<Episode>.Filter.Eq("Id", id));
+            var update = Builders<Serial>.Update.Push("Seasons.$[s].Episodes.$[e].Content", content);
+
+            var options = new UpdateOptions
+            {
+                ArrayFilters = new[]
+                {
+                    new BsonDocumentArrayFilterDefinition<BsonDocument>(new BsonDocument("s.Episodes._id", new ObjectId(id))),
+                    new BsonDocumentArrayFilterDefinition<BsonDocument>(new BsonDocument("e._id", new ObjectId(id)))
+                }
+            };
+
+            var result = await _collection.UpdateOneAsync(filter, update, options);
+
+            if (result.IsModifiedCountAvailable && result.ModifiedCount > 0)
+                return true;
+
+            return false;
         }
     }
 }

@@ -69,14 +69,20 @@ namespace MovieApi.Services.DataServices
         }
 
         /// <summary>
-        /// AddContent
+        /// Add Content
         /// </summary>
-        public async Task<Movie> AddContentAsync(string id, Content content)
+        public async Task<bool> AddContentAsync(string id, Content content)
         {
             var filter = Builders<Movie>.Filter.Eq("Id", id);
             var update = Builders<Movie>.Update.Push("Content", content);
-            var model = await _collection.FindOneAndUpdateAsync(filter, update, new() { ReturnDocument = ReturnDocument.After });
-            return model;
+            var options = new FindOneAndUpdateOptions<Movie>()
+            {
+                ReturnDocument = ReturnDocument.After
+            };
+
+            var model = await _collection.FindOneAndUpdateAsync(filter, update, options);
+
+            return model != null;
         }
     }
 }

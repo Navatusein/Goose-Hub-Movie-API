@@ -7,14 +7,20 @@ namespace MovieApi.MassTransit.Events
     /// <summary>
     /// 
     /// </summary>
-    [EntityName("movie-api-movie-add-content")]
-    public class MovieAddContentEvent
+    [EntityName("movie-api-anime-add-content")]
+    public class AnimeAddContentEvent
     {
         /// <summary>
-        /// Gets or Sets MovieId
+        /// Gets or Sets Id
         /// </summary>
         [Required]
-        public string MovieId { get; set; } = null!;
+        public string Id { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or Sets IsEpisode
+        /// </summary>
+        [Required]
+        public bool IsEpisode { get; set; }
 
         /// <summary>
         /// Gets or Sets Quality

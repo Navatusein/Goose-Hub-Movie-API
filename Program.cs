@@ -105,7 +105,9 @@ builder.Services.AddSingleton<CommonService>();
 
 builder.Services.AddMassTransit(options =>
 {
+    options.AddConsumer<AnimeAddContentConsumer>();
     options.AddConsumer<MovieAddContentConsumer>();
+    options.AddConsumer<SerialAddContentConsumer>();
 
     options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("movie-api", false));
 

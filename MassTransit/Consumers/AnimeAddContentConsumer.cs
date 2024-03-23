@@ -9,16 +9,16 @@ namespace MovieApi.MassTransit.Consumers
     /// <summary>
     /// 
     /// </summary>
-    public class MovieAddContentConsumer : IConsumer<MovieAddContentEvent>
+    public class AnimeAddContentConsumer : IConsumer<AnimeAddContentEvent>
     {
-        private static Serilog.ILogger Logger => Serilog.Log.ForContext<MovieAddContentConsumer>();
+        private static Serilog.ILogger Logger => Serilog.Log.ForContext<AnimeAddContentConsumer>();
 
-        private readonly MovieService _dataService;
+        private readonly AnimeService _dataService;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public MovieAddContentConsumer(MovieService dataService)
+        public AnimeAddContentConsumer(AnimeService dataService)
         {
             _dataService = dataService;
         }
@@ -26,7 +26,7 @@ namespace MovieApi.MassTransit.Consumers
         /// <summary>
         /// 
         /// </summary>
-        public async Task Consume(ConsumeContext<MovieAddContentEvent> context)
+        public async Task Consume(ConsumeContext<AnimeAddContentEvent> context)
         {
             var message = context.Message;
             var content = new Content()
@@ -35,7 +35,14 @@ namespace MovieApi.MassTransit.Consumers
                 Quality = message.Quality
             };
 
-            await _dataService.AddContentAsync(message.MovieId, content);
+            if (message.IsEpisode)
+            {
+                await _dataService.AddEpisodeContentAsync(message.Id, content);
+            }
+            else
+            {
+                await _dataService.AddContentAsync(message.Id, content);
+            }
         }
     }
 }

@@ -58,9 +58,26 @@ namespace MovieApi.Controllers
         [Route("query")]
         [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(List<PreviewDto>), description: "OK")]
-        public async Task<IActionResult> GetQuery([FromBody] QueryDto query)
+        public async Task<IActionResult> GetContentQuery([FromBody] QueryDto query)
         {
             var models = await _dataService.GetPreviewsByQueryAsync(query);
+            var dtos = models.Select(x => _mapper.Map<PreviewDto>(x)).ToList();
+
+            return StatusCode(200, dtos);
+        }
+
+        /// <summary>
+        /// Get Content By Ids
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <response code="200">OK</response>
+        [HttpPost]
+        [Route("ids")]
+        [AllowAnonymous]
+        [SwaggerResponse(statusCode: 200, type: typeof(List<PreviewDto>), description: "OK")]
+        public async Task<IActionResult> GetContentIds([FromBody] List<string> ids)
+        {
+            var models = await _dataService.GetPreviewsByIds(ids);
             var dtos = models.Select(x => _mapper.Map<PreviewDto>(x)).ToList();
 
             return StatusCode(200, dtos);

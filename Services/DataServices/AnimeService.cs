@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using MovieApi.Models;
 using MovieApi.Service;
 
@@ -65,6 +66,47 @@ namespace MovieApi.Services.DataServices
             var filter = Builders<Anime>.Filter.Eq("Id", id);
             var model = await _collection.FindOneAndDeleteAsync(filter);
             return model != null;
+        }
+
+        /// <summary>
+        /// Add Content
+        /// </summary>
+        public async Task<bool> AddContentAsync(string id, Content content)
+        {
+            var filter = Builders<Anime>.Filter.Eq("Id", id);
+            var update = Builders<Anime>.Update.Push("Content", content);
+            var options = new FindOneAndUpdateOptions<Anime>()
+            {
+                ReturnDocument = ReturnDocument.After
+            };
+
+            var model = await _collection.FindOneAndUpdateAsync(filter, update, options);
+
+            return model != null;
+        }
+
+        /// <summary>
+        /// Add Content To Episode
+        /// </summary>
+        public async Task<bool> AddEpisodeContentAsync(string id, Content content)
+        {
+            var filter = Builders<Anime>.Filter.ElemMatch("Episodes", Builders<Episode>.Filter.Eq("Id", id));
+            var update = Builders<Anime>.Update.Push("Episodes.$[e].Content", content);
+
+            var options = new UpdateOptions
+            {
+                ArrayFilters = new[]
+                {
+                    new BsonDocumentArrayFilterDefinition<BsonDocument>(new BsonDocument("e._id", new ObjectId(id)))
+                }
+            };
+
+            var result = await _collection.UpdateOneAsync(filter, update, options);
+
+            if (result.IsModifiedCountAvailable && result.ModifiedCount > 0)
+                return true;
+
+            return false;
         }
     }
 }

@@ -112,5 +112,16 @@ namespace MovieApi.Services.DataServices
             return result;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public async Task<List<Preview>> GetPreviewsByIds(List<string> ids)
+        {
+            var filter = Builders<Preview>.Filter.In("Id", ids);
+
+            var result = await _collection.Find(filter).ToListAsync();
+            return result;
+        }
+
     }
 }

@@ -106,16 +106,13 @@ namespace MovieApi.Controllers
         [HttpGet]
         [Route("test")]
         [AllowAnonymous]
-        public async Task<IActionResult> Test([FromQuery] string movieId)
+        public async Task<IActionResult> Test([FromQuery] string id)
         {
-            var test = new MovieAddContentEvent()
+            var test = new SerialAddContentEvent()
             {
-                MovieId = movieId,
-                Content = new Content()
-                {
-                    Quality = ContentQuality.FullHD,
-                    Path = "Test Path"
-                }
+                EpisodeId = id,
+                Quality = ContentQuality.FullHD,
+                Path = "Test Path"
             };
 
             await _publishEndpoint.Publish(test);
