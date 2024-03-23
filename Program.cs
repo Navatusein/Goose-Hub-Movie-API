@@ -10,6 +10,9 @@ using System.Text;
 using MovieApi.Services.DataServices;
 using MovieApi.AppMapping;
 using System.Xml;
+using MassTransit;
+using Microsoft.Extensions.Configuration;
+using MovieApi.MassTransit.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -99,6 +102,24 @@ builder.Services.AddSingleton<MovieService>();
 builder.Services.AddSingleton<SerialService>();
 builder.Services.AddSingleton<FranchiseService>();
 builder.Services.AddSingleton<CommonService>();
+
+builder.Services.AddMassTransit(options =>
+{
+    options.AddConsumer<MovieAddContentConsumer>();
+
+    options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("movie-api", false));
+
+    options.UsingRabbitMq((context, config) =>
+    {
+        config.Host(builder.Configuration.GetSection("RabbitMq:Host").Get<string>(), "/", host =>
+        {
+            host.Username(builder.Configuration.GetSection("RabbitMq:Username").Get<string>());
+            host.Password(builder.Configuration.GetSection("RabbitMq:Password").Get<string>());
+        });
+
+        config.ConfigureEndpoints(context);
+    });
+});
 
 var app = builder.Build();
 

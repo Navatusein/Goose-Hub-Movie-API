@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Minio.DataModel.Notification;
+using MongoDB.Driver;
 using MovieApi.Models;
 using MovieApi.Service;
 
@@ -28,7 +29,8 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public async Task<Movie> GetAsync(string id)
         {
-            var model = await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            var filter = Builders<Movie>.Filter.Eq("Id", id);
+            var model = await _collection.Find(filter).FirstOrDefaultAsync();
             return model;
         }
 
@@ -46,7 +48,13 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public async Task<Movie> UpdateAsync(string id, Movie model)
         {
-            model = await _collection.FindOneAndReplaceAsync(x => x.Id == id, model, new() { ReturnDocument = ReturnDocument.After });
+            var filter = Builders<Movie>.Filter.Eq("Id", id);
+            var options = new FindOneAndReplaceOptions<Movie>()
+            {
+                ReturnDocument = ReturnDocument.After
+            };
+
+            model = await _collection.FindOneAndReplaceAsync(filter, model, options);
             return model;
         }
 
@@ -55,8 +63,20 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public async Task<bool> DeleteAsync(string id)
         {
-            var model = await _collection.FindOneAndDeleteAsync(x => x.Id == id);
+            var filter = Builders<Movie>.Filter.Eq("Id", id);
+            var model = await _collection.FindOneAndDeleteAsync(filter);
             return model != null;
+        }
+
+        /// <summary>
+        /// AddContent
+        /// </summary>
+        public async Task<Movie> AddContentAsync(string id, Content content)
+        {
+            var filter = Builders<Movie>.Filter.Eq("Id", id);
+            var update = Builders<Movie>.Update.Push("Content", content);
+            var model = await _collection.FindOneAndUpdateAsync(filter, update, new() { ReturnDocument = ReturnDocument.After });
+            return model;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MovieApi.Models;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace MovieApi.Dtos
@@ -8,7 +9,10 @@ namespace MovieApi.Dtos
     /// </summary>
     public enum SortParam
     {
-
+        /// <summary>
+        /// No sort
+        /// </summary>
+        None,
     }
 
     /// <summary>
@@ -21,6 +25,7 @@ namespace MovieApi.Dtos
         /// </summary>
         [Required]
         [Range(1, Int32.MaxValue)]
+        [DefaultValue(1)]
         public int Page { get; set; }
 
         /// <summary>
@@ -28,6 +33,7 @@ namespace MovieApi.Dtos
         /// </summary>
         [Required]
         [Range(1, Int32.MaxValue)]
+        [DefaultValue(20)]
         public int PageSize { get; set; }
 
         /// <summary>
@@ -51,13 +57,18 @@ namespace MovieApi.Dtos
         public int? YearEnd { get; set; }
 
         /// <summary>
-        /// Gets or Sets Query
-        /// </summary>
-        public SortParam? Sort { get; set; }
-
-        /// <summary>
         /// Gets or Sets ContentType
         /// </summary>
         public ContentTypeEnum? ContentType { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Status
+        /// </summary>
+        public StatusEnum? Status { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Query
+        /// </summary>
+        public SortParam Sort { get; set; }
     }
 }

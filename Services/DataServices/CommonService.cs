@@ -41,10 +41,8 @@ namespace MovieApi.Services.DataServices
         public async Task<List<string>> GetDirectedByAsync(string query)
         {
             var filter = Builders<Preview>.Filter.Regex("DirectedBy", new BsonRegularExpression(query, "i"));
-
-            var result = await _collection.Distinct(new StringFieldDefinition<Preview, string>("DirectedBy"), filter)
-                .ToListAsync();
-
+            var field = new StringFieldDefinition<Preview, string>("DirectedBy");
+            var result = await _collection.Distinct(field, filter).ToListAsync();
             return result;
         }
 
@@ -53,8 +51,9 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public async Task<List<string>> GetGenresAsync()
         {
-            var result = await _collection.Distinct(new StringFieldDefinition<Preview, string>("Genres"), FilterDefinition<Preview>.Empty)
-                .ToListAsync();
+            var filter = FilterDefinition<Preview>.Empty;
+            var field = new StringFieldDefinition<Preview, string>("Genres");
+            var result = await _collection.Distinct(field, filter).ToListAsync();
             return result;
         }
 
@@ -63,8 +62,9 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public async Task<List<int>> GetYearsAsync()
         {
-            var result = await _collection.Distinct(new StringFieldDefinition<Preview, int>("Release.Year"), FilterDefinition<Preview>.Empty)
-                .ToListAsync();
+            var filter = FilterDefinition<Preview>.Empty;
+            var field = new StringFieldDefinition<Preview, int>("Release.Year");
+            var result = await _collection.Distinct(field, filter).ToListAsync();
             return result;
         }
 
@@ -74,13 +74,13 @@ namespace MovieApi.Services.DataServices
         public async Task<List<Preview>> GetPreviewsByQueryAsync(QueryDto queryDto)
         {
             var filterBuilder = Builders<Preview>.Filter;
-            var filters = new List<FilterDefinition<Preview>>()
-            {
-                filterBuilder.Eq("ContentType", queryDto.ContentType)
-            };
+            var filters = new List<FilterDefinition<Preview>>();
 
-            if (queryDto.Query != null)
-                filters.Add(filterBuilder.Regex("Name", new BsonRegularExpression(queryDto.Query, "i")));
+            if (queryDto.ContentType != null)
+                filters.Add(filterBuilder.Eq("ContentType", queryDto.ContentType));
+
+            if (queryDto.Status != null)
+                filters.Add(filterBuilder.Eq("Status", queryDto.Status));
 
             if (queryDto.Genres.Count != 0)
                 filters.Add(filterBuilder.All("Genres", queryDto.Genres));
@@ -88,7 +88,10 @@ namespace MovieApi.Services.DataServices
             if (queryDto.YearStart != null && queryDto.YearEnd != null)
                 filters.Add(filterBuilder.Gte("Release.Year", queryDto.YearStart) & filterBuilder.Lte("Release.Year", queryDto.YearEnd));
 
-            var combinedFilter = filterBuilder.And(filters);
+            if (queryDto.Query != null)
+                filters.Add(filterBuilder.Regex("Name", new BsonRegularExpression(queryDto.Query, "i")));
+
+            var combinedFilter = filters.Count != 0 ? filterBuilder.And(filters) : filterBuilder.Empty;
 
             var result = await _collection.Find(combinedFilter)
                 .Skip((queryDto.Page - 1) * queryDto.PageSize)
@@ -103,7 +106,9 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public async Task<List<Preview>> GetPreviewsByFranchiseAsync(string franchiseId)
         {
-            var result = await _collection.Find(x => x.FranchiseId == franchiseId).ToListAsync();
+            var filter = Builders<Preview>.Filter.Eq("FranchiseId", franchiseId);
+
+            var result = await _collection.Find(filter).ToListAsync();
             return result;
         }
 

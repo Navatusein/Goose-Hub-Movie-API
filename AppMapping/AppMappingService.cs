@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MongoDB.Bson;
 using MovieApi.Dtos;
 using MovieApi.Models;
 using MovieApi.Service;
@@ -32,13 +33,19 @@ namespace MovieApi.AppMapping
                 .ForMember(dest => dest.ScreenshotUrls, opt => opt.MapFrom<ImageListUrlResolver, List<string>>(src => src.ScreenshotPath))
                 .ReverseMap();
 
-            CreateMap<Season, SeasonDto>().ReverseMap();
+            CreateMap<Season, SeasonDto>()
+                .ReverseMap()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id ?? ObjectId.GenerateNewId().ToString()));
 
-            CreateMap<Episode, EpisodeDto>().ReverseMap();
+            CreateMap<Episode, EpisodeDto>()
+                .ReverseMap()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id ?? ObjectId.GenerateNewId().ToString()));
 
             CreateMap<Content, ContentDto>()
                 .ForMember(dest => dest.Url, opt => opt.MapFrom<ContentUrlResolver, string>(src => src.Path))
                 .ReverseMap();
+
+            CreateMap<Franchise, FranchiseDto>().ReverseMap();
         }
     }
 }

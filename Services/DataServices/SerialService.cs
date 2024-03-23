@@ -28,7 +28,8 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public async Task<Serial> GetAsync(string id)
         {
-            var model = await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            var filter = Builders<Serial>.Filter.Eq("Id", id);
+            var model = await _collection.Find(filter).FirstOrDefaultAsync();
             return model;
         }
 
@@ -46,7 +47,13 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public async Task<Serial> UpdateAsync(string id, Serial model)
         {
-            model = await _collection.FindOneAndReplaceAsync(x => x.Id == id, model, new() { ReturnDocument = ReturnDocument.After });
+            var filter = Builders<Serial>.Filter.Eq("Id", id);
+            var options = new FindOneAndReplaceOptions<Serial>()
+            {
+                ReturnDocument = ReturnDocument.After
+            };
+
+            model = await _collection.FindOneAndReplaceAsync(filter, model, options);
             return model;
         }
 
@@ -55,7 +62,8 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public async Task<bool> DeleteAsync(string id)
         {
-            var model = await _collection.FindOneAndDeleteAsync(x => x.Id == id);
+            var filter = Builders<Serial>.Filter.Eq("Id", id);
+            var model = await _collection.FindOneAndDeleteAsync(filter);
             return model != null;
         }
     }

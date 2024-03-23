@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using MovieApi.Models;
 using MovieApi.Service;
 
@@ -24,11 +25,22 @@ namespace MovieApi.Services.DataServices
         }
 
         /// <summary>
+        /// Get Franchise By Query
+        /// </summary>
+        public async Task<List<Franchise>> GetByQueryAsync(string query)
+        {
+            var filter = Builders<Franchise>.Filter.Regex("Name", new BsonRegularExpression(query, "i"));
+            var models = await _collection.Find(filter).ToListAsync();
+            return models;
+        }
+
+        /// <summary>
         /// Get Franchise
         /// </summary>
         public async Task<Franchise> GetAsync(string id)
         {
-            var model = await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            var filter = Builders<Franchise>.Filter.Eq("Id", id);
+            var model = await _collection.Find(filter).FirstOrDefaultAsync();
             return model;
         }
 
@@ -46,7 +58,13 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public async Task<Franchise> UpdateAsync(string id, Franchise model)
         {
-            model = await _collection.FindOneAndReplaceAsync(x => x.Id == id, model, new() { ReturnDocument = ReturnDocument.After });
+            var filter = Builders<Franchise>.Filter.Eq("Id", id);
+            var options = new FindOneAndReplaceOptions<Franchise>()
+            {
+                ReturnDocument = ReturnDocument.After
+            };
+
+            model = await _collection.FindOneAndReplaceAsync(filter, model, options);
             return model;
         }
 
@@ -55,7 +73,8 @@ namespace MovieApi.Services.DataServices
         /// </summary>
         public async Task<bool> DeleteAsync(string id)
         {
-            var model = await _collection.FindOneAndDeleteAsync(x => x.Id == id);
+            var filter = Builders<Franchise>.Filter.Eq("Id", id);
+            var model = await _collection.FindOneAndDeleteAsync(filter);
             return model != null;
         }
     }

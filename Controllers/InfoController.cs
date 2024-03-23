@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MovieApi.Dtos;
+using MovieApi.MassTransit.Events;
+using MovieApi.Models;
 using MovieApi.Service;
 using MovieApi.Services.DataServices;
 using Swashbuckle.AspNetCore.Annotations;
@@ -17,15 +21,21 @@ namespace MovieApi.Controllers
     public class InfoController : ControllerBase
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<InfoController>();
-      
-        private readonly CommonService _dataService;
+
+        private readonly IMapper _mapper;
+        private readonly CommonService _commonService;
+        private readonly FranchiseService _franchiseService;
+        private readonly IPublishEndpoint _publishEndpoint;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public InfoController(CommonService dataService)
+        public InfoController(IMapper mapper, CommonService commonService, FranchiseService franchiseService, IPublishEndpoint publishEndpoint)
         {
-            _dataService = dataService;
+            _mapper = mapper;
+            _commonService = commonService;
+            _franchiseService = franchiseService;
+            _publishEndpoint = publishEndpoint;
         }
 
         /// <summary>
@@ -37,10 +47,10 @@ namespace MovieApi.Controllers
         [Route("directed-by")]
         [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(List<string>), description: "OK")]
-        public async Task<IActionResult> GetInfoDirectedBy([FromQuery] string query)
+        public async Task<IActionResult> GetInfoDirectedBy([FromQuery] string? query)
         {
 
-            var list = await _dataService.GetDirectedByAsync(query);
+            var list = await _commonService.GetDirectedByAsync(query ?? "");
             return StatusCode(200, list);
         }
 
@@ -54,7 +64,7 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(List<string>), description: "OK")]
         public async Task<IActionResult> GetInfoGenres()
         {
-            var list = await _dataService.GetGenresAsync();
+            var list = await _commonService.GetGenresAsync();
             return StatusCode(200, list);
         }
 
@@ -68,8 +78,49 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(List<int>), description: "OK")]
         public async Task<IActionResult> GetInfoYears()
         {
-            var list = await _dataService.GetYearsAsync();
+            var list = await _commonService.GetYearsAsync();
             return StatusCode(200, list);
+        }
+
+        /// <summary>
+        /// Get Directed By
+        /// </summary>
+        /// <param name="query"></param>
+        /// <response code="200">OK</response>
+        [HttpGet]
+        [Route("franchise")]
+        [AllowAnonymous]
+        [SwaggerResponse(statusCode: 200, type: typeof(List<string>), description: "OK")]
+        public async Task<IActionResult> GetInfoFranchise([FromQuery] string? query)
+        {
+            var models = await _franchiseService.GetByQueryAsync(query ?? "");
+            var dtos = models.Select(x => _mapper.Map<FranchiseDto>(x)).ToList();
+
+            return StatusCode(200, dtos);
+        }
+
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <response code="200">OK</response>
+        [HttpGet]
+        [Route("test")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Test([FromQuery] string movieId)
+        {
+            var test = new MovieAddContentEvent()
+            {
+                MovieId = movieId,
+                Content = new Content()
+                {
+                    Quality = ContentQuality.FullHD,
+                    Path = "Test Path"
+                }
+            };
+
+            await _publishEndpoint.Publish(test);
+
+            return StatusCode(200);
         }
     }
 }

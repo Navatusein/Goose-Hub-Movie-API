@@ -10,8 +10,7 @@ namespace MovieApi.Dtos
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [Required]
-        public string Id { get; set; } = null!;
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Index
@@ -22,7 +21,7 @@ namespace MovieApi.Dtos
         /// <summary>
         /// Gets or Sets Name
         /// </summary>
-        public string Name { get; set; } = null!;
+        public string? Name { get; set; }
 
         /// <summary>
         /// Gets or Sets Content

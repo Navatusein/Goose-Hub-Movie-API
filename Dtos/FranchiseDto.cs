@@ -12,8 +12,7 @@ namespace MovieApi.Dtos
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [Required]
-        public string Id { get; set; } = null!;
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
