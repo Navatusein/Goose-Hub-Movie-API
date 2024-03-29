@@ -63,8 +63,7 @@ namespace MovieApi.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         [HttpPost]
-        // [Authorize(Roles = "Admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [SwaggerResponse(statusCode: 201, type: typeof(FranchiseDto), description: "Created")]
         public async Task<IActionResult> Post([FromBody] FranchiseDto franchiseDto)
         {

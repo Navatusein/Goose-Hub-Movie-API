@@ -64,8 +64,7 @@ namespace MovieApi.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [SwaggerResponse(statusCode: 201, type: typeof(MovieDto), description: "Created")]
         public async Task<IActionResult> Post([FromBody] MovieDto movieDto)
         {
@@ -85,8 +84,7 @@ namespace MovieApi.Controllers
         /// <response code="404">Not Found</response>
         [HttpPut]
         [Route("{id}")]
-        //[Authorize(Roles = "Admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [SwaggerResponse(statusCode: 200, type: typeof(MovieDto), description: "OK")]
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> Put([FromRoute(Name = "id")][Required] string id, [FromBody] MovieDto movieDto)
@@ -110,8 +108,7 @@ namespace MovieApi.Controllers
         /// <response code="404">Not Found</response>
         [HttpDelete]
         [Route("{id}")]
-        //[Authorize(Roles = "Admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [SwaggerResponse(statusCode: 200, description: "OK")]
         public async Task<IActionResult> Delete([FromRoute(Name = "id")][Required] string id)
         {
