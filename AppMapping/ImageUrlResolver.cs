@@ -8,7 +8,7 @@ using MovieApi.Services.DataServices;
 namespace MovieApi.AppMapping
 {
     /// <summary>
-    /// UrlResolver
+    /// ImageUrlResolver
     /// </summary>
     public class ImageUrlResolver : IMemberValueResolver<object, object, string?, string?>
     {

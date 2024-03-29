@@ -4,7 +4,7 @@ using System.Text;
 namespace MovieApi.Dtos
 {
     /// <summary>
-    /// Model for errors
+    /// Model for error responses
     /// </summary>
     public class ErrorDto
     {

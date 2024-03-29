@@ -6,7 +6,7 @@ using MovieApi.Services.DataServices;
 namespace MovieApi.MassTransit.Consumers
 {
     /// <summary>
-    /// 
+    /// Consumer for SerialAddContentEvent
     /// </summary>
     public class SerialAddContentConsumer : IConsumer<SerialAddContentEvent>
     {
@@ -23,7 +23,7 @@ namespace MovieApi.MassTransit.Consumers
         }
 
         /// <summary>
-        /// 
+        /// Consume
         /// </summary>
         public async Task Consume(ConsumeContext<SerialAddContentEvent> context)
         {

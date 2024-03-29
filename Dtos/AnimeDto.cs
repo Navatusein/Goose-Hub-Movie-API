@@ -6,7 +6,7 @@ using System.Xml.Linq;
 namespace MovieApi.Dtos
 {
     /// <summary>
-    /// Model for anime
+    /// Dto for Anime
     /// </summary>
     public class AnimeDto : PreviewDto
     {

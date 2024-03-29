@@ -13,7 +13,7 @@ using System.Data;
 namespace MovieApi.Controllers
 {
     /// <summary>
-    /// 
+    /// Serial Controller
     /// </summary>
     [Route("api/movie-api/v1/serial")]
     [ApiController]

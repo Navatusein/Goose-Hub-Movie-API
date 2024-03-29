@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace MovieApi.Services.DataServices
 {
     /// <summary>
-    /// 
+    /// Common MongoDB service
     /// </summary>
     public class CommonService
     {
@@ -24,19 +24,10 @@ namespace MovieApi.Services.DataServices
             var collectionName = config.GetSection("MongoDB:CollectionContentName").Get<string>();
 
             _collection = connectionService.Database.GetCollection<Preview>(collectionName);
-
-            //var indexes = _collection.Indexes.List().ToList();
-
-            //if (!indexes.Any(x => x["name"].AsString == "NameTextIndex" )) 
-            //{
-            //    var key = Builders<Preview>.IndexKeys.Text(x => x.Name);
-            //    var index = new CreateIndexModel<Preview>(key, new CreateIndexOptions { Name = "NameTextIndex" });
-            //    _collection.Indexes.CreateOne(index);
-            //}
         }
 
         /// <summary>
-        /// 
+        /// Get DirectedBy
         /// </summary>
         public async Task<List<string>> GetDirectedByAsync(string query)
         {
@@ -47,7 +38,7 @@ namespace MovieApi.Services.DataServices
         }
 
         /// <summary>
-        /// 
+        /// Get Genres
         /// </summary>
         public async Task<List<string>> GetGenresAsync()
         {
@@ -58,7 +49,7 @@ namespace MovieApi.Services.DataServices
         }
 
         /// <summary>
-        /// 
+        /// Get Years
         /// </summary>
         public async Task<List<int>> GetYearsAsync()
         {
@@ -69,9 +60,67 @@ namespace MovieApi.Services.DataServices
         }
 
         /// <summary>
-        /// 
+        /// Get Preview by Query
         /// </summary>
         public async Task<List<Preview>> GetPreviewsByQueryAsync(QueryDto queryDto)
+        {
+            var filter = GetQueryFilter(queryDto);
+            var result = await _collection.Find(filter)
+                .Skip((queryDto.Page - 1) * queryDto.PageSize)
+                .Limit(queryDto.PageSize)
+                .ToListAsync();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Count Preview by Query
+        /// </summary>
+        public async Task<long> CountPreviewsByQueryAsync(QueryDto queryDto)
+        {
+            var filter = GetQueryFilter(queryDto);
+            var result = await _collection.CountDocumentsAsync(filter);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get Preview by Franchise Id
+        /// </summary>
+        public async Task<List<Preview>> GetPreviewsByFranchiseAsync(string franchiseId)
+        {
+            var filter = Builders<Preview>.Filter.Eq("FranchiseId", franchiseId);
+
+            var result = await _collection.Find(filter).ToListAsync();
+            return result;
+        }
+
+        /// <summary>
+        /// Get Preview by Ids
+        /// </summary>
+        public async Task<List<Preview>> GetPreviewsByIds(List<string> ids)
+        {
+            var filter = Builders<Preview>.Filter.In("Id", ids);
+
+            var result = await _collection.Find(filter).ToListAsync();
+            return result;
+        }
+
+        /// <summary>
+        /// Check content exist
+        /// </summary>
+        public async Task<bool> GetPreviewsByIds(string id)
+        {
+            var filter = Builders<Preview>.Filter.Eq("Id", id);
+            var result = await _collection.Find(filter).FirstOrDefaultAsync();
+
+            return result != null;
+        }
+
+        /// <summary>
+        /// Get filter to filter by query
+        /// </summary>
+        private FilterDefinition<Preview> GetQueryFilter(QueryDto queryDto)
         {
             var filterBuilder = Builders<Preview>.Filter;
             var filters = new List<FilterDefinition<Preview>>();
@@ -93,35 +142,7 @@ namespace MovieApi.Services.DataServices
 
             var combinedFilter = filters.Count != 0 ? filterBuilder.And(filters) : filterBuilder.Empty;
 
-            var result = await _collection.Find(combinedFilter)
-                .Skip((queryDto.Page - 1) * queryDto.PageSize)
-                .Limit(queryDto.PageSize)
-                .ToListAsync();
-
-            return result;
+            return combinedFilter;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public async Task<List<Preview>> GetPreviewsByFranchiseAsync(string franchiseId)
-        {
-            var filter = Builders<Preview>.Filter.Eq("FranchiseId", franchiseId);
-
-            var result = await _collection.Find(filter).ToListAsync();
-            return result;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public async Task<List<Preview>> GetPreviewsByIds(List<string> ids)
-        {
-            var filter = Builders<Preview>.Filter.In("Id", ids);
-
-            var result = await _collection.Find(filter).ToListAsync();
-            return result;
-        }
-
     }
 }

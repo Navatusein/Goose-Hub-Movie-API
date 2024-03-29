@@ -14,7 +14,7 @@ using System.Text.Json;
 namespace MovieApi.Controllers
 {
     /// <summary>
-    /// 
+    /// Info Controller
     /// </summary>
     [Route("api/movie-api/v1/info")]
     [ApiController]
@@ -25,17 +25,15 @@ namespace MovieApi.Controllers
         private readonly IMapper _mapper;
         private readonly CommonService _commonService;
         private readonly FranchiseService _franchiseService;
-        private readonly IPublishEndpoint _publishEndpoint;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public InfoController(IMapper mapper, CommonService commonService, FranchiseService franchiseService, IPublishEndpoint publishEndpoint)
+        public InfoController(IMapper mapper, CommonService commonService, FranchiseService franchiseService)
         {
             _mapper = mapper;
             _commonService = commonService;
             _franchiseService = franchiseService;
-            _publishEndpoint = publishEndpoint;
         }
 
         /// <summary>
@@ -97,27 +95,6 @@ namespace MovieApi.Controllers
             var dtos = models.Select(x => _mapper.Map<FranchiseDto>(x)).ToList();
 
             return StatusCode(200, dtos);
-        }
-
-        /// <summary>
-        /// Test
-        /// </summary>
-        /// <response code="200">OK</response>
-        [HttpGet]
-        [Route("test")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Test([FromQuery] string id)
-        {
-            var test = new SerialAddContentEvent()
-            {
-                EpisodeId = id,
-                Quality = ContentQuality.FullHD,
-                Path = "Test Path"
-            };
-
-            await _publishEndpoint.Publish(test);
-
-            return StatusCode(200);
         }
     }
 }

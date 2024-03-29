@@ -103,17 +103,21 @@ builder.Services.AddSingleton<SerialService>();
 builder.Services.AddSingleton<FranchiseService>();
 builder.Services.AddSingleton<CommonService>();
 
+// Add MassTransit
 builder.Services.AddMassTransit(options =>
 {
     options.AddConsumer<AnimeAddContentConsumer>();
     options.AddConsumer<MovieAddContentConsumer>();
     options.AddConsumer<SerialAddContentConsumer>();
+    options.AddConsumer<ContentExistConsumer>();
 
     options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("movie-api", false));
 
     options.UsingRabbitMq((context, config) =>
     {
-        config.Host(builder.Configuration.GetSection("RabbitMq:Host").Get<string>(), "/", host =>
+        var host = builder.Configuration.GetSection("RabbitMq:Host").Get<string>();
+
+        config.Host(host, "/", host =>
         {
             host.Username(builder.Configuration.GetSection("RabbitMq:Username").Get<string>());
             host.Password(builder.Configuration.GetSection("RabbitMq:Password").Get<string>());

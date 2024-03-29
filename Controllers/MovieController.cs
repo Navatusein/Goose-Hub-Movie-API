@@ -13,7 +13,7 @@ using System.Data;
 namespace MovieApi.Controllers
 {
     /// <summary>
-    /// 
+    /// Movie Controller
     /// </summary>
     [Route("api/movie-api/v1/movie")]
     [ApiController]

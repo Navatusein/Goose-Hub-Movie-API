@@ -20,7 +20,7 @@ namespace MovieApi.Service
         public IMongoDatabase Database { get; private set; }
 
         /// <summary>
-        /// Сonstructor of class MongoDbConnectionService
+        /// Constructor
         /// </summary>
         public MongoDbConnectionService(IConfiguration config)
         {

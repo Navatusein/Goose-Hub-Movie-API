@@ -5,9 +5,10 @@ using System.ComponentModel.DataAnnotations;
 namespace MovieApi.MassTransit.Events
 {
     /// <summary>
-    /// 
+    /// Model for SerialAddContentEvent
     /// </summary>
     [EntityName("movie-api-serial-add-content")]
+    [MessageUrn("SerialAddContentEvent")]
     public class SerialAddContentEvent
     {
         /// <summary>
@@ -15,8 +16,6 @@ namespace MovieApi.MassTransit.Events
         /// </summary>
         [Required]
         public string EpisodeId { get; set; } = null!;
-
-
 
         /// <summary>
         /// Gets or Sets Quality

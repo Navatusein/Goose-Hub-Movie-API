@@ -5,9 +5,10 @@ using System.ComponentModel.DataAnnotations;
 namespace MovieApi.MassTransit.Events
 {
     /// <summary>
-    /// 
+    /// Model for MovieAddContentEvent
     /// </summary>
     [EntityName("movie-api-movie-add-content")]
+    [MessageUrn("MovieAddContentEvent")]
     public class MovieAddContentEvent
     {
         /// <summary>

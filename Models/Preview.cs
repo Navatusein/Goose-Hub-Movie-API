@@ -62,7 +62,7 @@ namespace MovieApi.Models
     {
 
         /// <summary>
-        /// Moive
+        /// Movie
         /// </summary>
         Moive = 1,
 

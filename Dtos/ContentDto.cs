@@ -3,7 +3,7 @@
 namespace MovieApi.Dtos
 {
     /// <summary>
-    /// Model for episode, movie data
+    /// Dto for Content
     /// </summary>
     public class ContentDto
     {

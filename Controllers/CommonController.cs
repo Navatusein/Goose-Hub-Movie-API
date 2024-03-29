@@ -12,7 +12,7 @@ using System.Text.Json;
 namespace MovieApi.Controllers
 {
     /// <summary>
-    /// 
+    /// Common Controller
     /// </summary>
     [Route("/api/movie-api/v1/content")]
     [ApiController]
@@ -57,13 +57,23 @@ namespace MovieApi.Controllers
         [HttpPost]
         [Route("query")]
         [AllowAnonymous]
-        [SwaggerResponse(statusCode: 200, type: typeof(List<PreviewDto>), description: "OK")]
+        [SwaggerResponse(statusCode: 200, type: typeof(PaginationDto), description: "OK")]
         public async Task<IActionResult> GetContentQuery([FromBody] QueryDto query)
         {
             var models = await _dataService.GetPreviewsByQueryAsync(query);
+            var totalCount = await _dataService.CountPreviewsByQueryAsync(query);
+
             var dtos = models.Select(x => _mapper.Map<PreviewDto>(x)).ToList();
 
-            return StatusCode(200, dtos);
+            var paginationDto = new PaginationDto() { 
+                Page = query.Page,
+                PageSize = query.PageSize,
+                TotalCount = totalCount,
+                ReturnedCount = dtos.Count,
+                Data = dtos
+            };
+
+            return StatusCode(200, paginationDto);
         }
 
         /// <summary>

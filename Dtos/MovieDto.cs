@@ -1,12 +1,10 @@
 ﻿using MovieApi.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
-using System.Xml.Linq;
 
 namespace MovieApi.Dtos
 {
     /// <summary>
-    /// Model for movies
+    /// Dto for Movie
     /// </summary>
     public class MovieDto : PreviewDto
     {

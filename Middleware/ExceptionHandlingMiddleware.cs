@@ -13,7 +13,7 @@ namespace MovieApi.Middleware
         private readonly RequestDelegate _next;
 
         /// <summary>
-        /// Constructor of class ExceptionHandlingMiddleware
+        /// Constructor
         /// </summary>
         public ExceptionHandlingMiddleware(RequestDelegate next)
         {

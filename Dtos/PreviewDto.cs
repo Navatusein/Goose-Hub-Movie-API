@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace MovieApi.Dtos
 {
     /// <summary>
-    /// Parent model for anime, serial, movie
+    /// Dto for Preview
     /// </summary>
     public class PreviewDto
     {

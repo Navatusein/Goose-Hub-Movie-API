@@ -5,7 +5,7 @@ using System.Xml.Linq;
 namespace MovieApi.Dtos
 {
     /// <summary>
-    /// Model for franchise
+    /// Dto for Franchise
     /// </summary>
     public class FranchiseDto
     {

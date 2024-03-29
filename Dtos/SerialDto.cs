@@ -3,7 +3,7 @@
 namespace MovieApi.Dtos
 {
     /// <summary>
-    /// Model for serial
+    /// Dto for Serial
     /// </summary>
     public class SerialDto : PreviewDto
     {

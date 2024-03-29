@@ -3,7 +3,7 @@
 namespace MovieApi.Dtos
 {
     /// <summary>
-    /// Model for serial season or anime episode
+    /// Dto for Content
     /// </summary>
     public class EpisodeDto
     {
