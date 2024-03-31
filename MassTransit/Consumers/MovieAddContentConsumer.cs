@@ -29,13 +29,8 @@ namespace MovieApi.MassTransit.Consumers
         public async Task Consume(ConsumeContext<MovieAddContentEvent> context)
         {
             var message = context.Message;
-            var content = new Content()
-            {
-                Path = message.Path,
-                Quality = message.Quality
-            };
 
-            await _dataService.AddContentAsync(message.MovieId, content);
+            await _dataService.AddContentAsync(message.MovieId, message.Content);
         }
     }
 }

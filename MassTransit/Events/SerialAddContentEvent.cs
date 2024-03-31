@@ -18,15 +18,9 @@ namespace MovieApi.MassTransit.Events
         public string EpisodeId { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets Quality
+        /// Gets or Sets IsEpisode
         /// </summary>
         [Required]
-        public ContentQuality Quality { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Path
-        /// </summary>
-        [Required]
-        public string Path { get; set; } = null!;
+        public Content Content { get; set; } = null!;
     }
 }

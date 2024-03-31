@@ -38,7 +38,6 @@ namespace MovieApi.Models
     /// </summary>
     public enum DataTypeEnum
     {
-
         /// <summary>
         /// Movie
         /// </summary>
@@ -60,11 +59,10 @@ namespace MovieApi.Models
     /// </summary>
     public enum ContentTypeEnum
     {
-
         /// <summary>
         /// Movie
         /// </summary>
-        Moive = 1,
+        Movie = 1,
 
         /// <summary>
         /// Serial

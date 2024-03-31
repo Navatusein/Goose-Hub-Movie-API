@@ -40,9 +40,13 @@ namespace MovieApi.Services.DataServices
         /// <summary>
         /// Get Genres
         /// </summary>
-        public async Task<List<string>> GetGenresAsync()
+        public async Task<List<string>> GetGenresAsync(ContentTypeEnum? contentType)
         {
             var filter = FilterDefinition<Preview>.Empty;
+
+            if (contentType != null)
+                filter = Builders<Preview>.Filter.Eq("ContentType", contentType);
+
             var field = new StringFieldDefinition<Preview, string>("Genres");
             var result = await _collection.Distinct(field, filter).ToListAsync();
             return result;
@@ -51,11 +55,16 @@ namespace MovieApi.Services.DataServices
         /// <summary>
         /// Get Years
         /// </summary>
-        public async Task<List<int>> GetYearsAsync()
+        public async Task<List<int>> GetYearsAsync(ContentTypeEnum? contentType)
         {
             var filter = FilterDefinition<Preview>.Empty;
+
+            if (contentType != null)
+                filter = Builders<Preview>.Filter.Eq("ContentType", contentType);
+
             var field = new StringFieldDefinition<Preview, int>("Release.Year");
             var result = await _collection.Distinct(field, filter).ToListAsync();
+
             return result;
         }
 
@@ -109,9 +118,23 @@ namespace MovieApi.Services.DataServices
         /// <summary>
         /// Check content exist
         /// </summary>
-        public async Task<bool> GetPreviewsByIds(string id)
+        public async Task<bool> ContentExist(string id)
         {
             var filter = Builders<Preview>.Filter.Eq("Id", id);
+            var result = await _collection.Find(filter).FirstOrDefaultAsync();
+
+            return result != null;
+        }
+
+        /// <summary>
+        /// Check content exist
+        /// </summary>
+        public async Task<bool> EpisodeExist(string id)
+        {
+            var filter = Builders<Preview>.Filter.Or(
+                Builders<Preview>.Filter.ElemMatch("Seasons.Episodes", Builders<Preview>.Filter.Eq("Id", id)), 
+                Builders<Preview>.Filter.ElemMatch("Episodes", Builders<Preview>.Filter.Eq("Id", id)));
+
             var result = await _collection.Find(filter).FirstOrDefaultAsync();
 
             return result != null;
@@ -130,6 +153,9 @@ namespace MovieApi.Services.DataServices
 
             if (queryDto.Status != null)
                 filters.Add(filterBuilder.Eq("Status", queryDto.Status));
+
+            if (queryDto.AnimeType != null)
+                filters.Add(filterBuilder.Eq("AnimeType", queryDto.AnimeType));
 
             if (queryDto.Genres.Count != 0)
                 filters.Add(filterBuilder.All("Genres", queryDto.Genres));

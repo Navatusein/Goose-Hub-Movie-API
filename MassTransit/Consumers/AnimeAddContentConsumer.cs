@@ -29,19 +29,14 @@ namespace MovieApi.MassTransit.Consumers
         public async Task Consume(ConsumeContext<AnimeAddContentEvent> context)
         {
             var message = context.Message;
-            var content = new Content()
-            {
-                Path = message.Path,
-                Quality = message.Quality
-            };
-
+          
             if (message.IsEpisode)
             {
-                await _dataService.AddEpisodeContentAsync(message.Id, content);
+                await _dataService.AddEpisodeContentAsync(message.Id, message.Content);
             }
             else
             {
-                await _dataService.AddContentAsync(message.Id, content);
+                await _dataService.AddContentAsync(message.Id, message.Content);
             }
         }
     }

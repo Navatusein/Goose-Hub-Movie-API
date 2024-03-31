@@ -33,6 +33,6 @@ namespace MovieApi.Dtos
         /// <summary>
         /// Gets or Sets Content
         /// </summary>
-        public List<Content>? Content { get; set; }
+        public List<ContentDto>? Content { get; set; }
     }
 }

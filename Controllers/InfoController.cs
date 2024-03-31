@@ -47,7 +47,6 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(List<string>), description: "OK")]
         public async Task<IActionResult> GetInfoDirectedBy([FromQuery] string? query)
         {
-
             var list = await _commonService.GetDirectedByAsync(query ?? "");
             return StatusCode(200, list);
         }
@@ -60,9 +59,9 @@ namespace MovieApi.Controllers
         [Route("genres")]
         [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(List<string>), description: "OK")]
-        public async Task<IActionResult> GetInfoGenres()
+        public async Task<IActionResult> GetInfoGenres([FromQuery]ContentTypeEnum? contentType)
         {
-            var list = await _commonService.GetGenresAsync();
+            var list = await _commonService.GetGenresAsync(contentType);
             return StatusCode(200, list);
         }
 
@@ -73,15 +72,22 @@ namespace MovieApi.Controllers
         [HttpGet]
         [Route("years")]
         [AllowAnonymous]
-        [SwaggerResponse(statusCode: 200, type: typeof(List<int>), description: "OK")]
-        public async Task<IActionResult> GetInfoYears()
+        [SwaggerResponse(statusCode: 200, type: typeof(YearsInfoDto), description: "OK")]
+        public async Task<IActionResult> GetInfoYears([FromQuery] ContentTypeEnum? contentType)
         {
-            var list = await _commonService.GetYearsAsync();
-            return StatusCode(200, list);
+            var list = await _commonService.GetYearsAsync(contentType);
+
+            var yearInfoDto = new YearsInfoDto()
+            {
+                MinYear = list.Min(),
+                MaxYear = list.Max()
+            };
+
+            return StatusCode(200, yearInfoDto);
         }
 
         /// <summary>
-        /// Get Directed By
+        /// Get Franchise
         /// </summary>
         /// <param name="query"></param>
         /// <response code="200">OK</response>

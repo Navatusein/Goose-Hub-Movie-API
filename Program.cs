@@ -110,6 +110,7 @@ builder.Services.AddMassTransit(options =>
     options.AddConsumer<MovieAddContentConsumer>();
     options.AddConsumer<SerialAddContentConsumer>();
     options.AddConsumer<ContentExistConsumer>();
+    options.AddConsumer<EpisodeExistConsumer>();
 
     options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("movie-api", false));
 
@@ -133,7 +134,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(option =>
+    {
+        option.DocumentTitle = "Movie API";
+    });
 }
 
 // Add Exception Handling Middleware

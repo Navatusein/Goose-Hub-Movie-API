@@ -9,7 +9,6 @@ namespace MovieApi.Models
     /// </summary>
     public enum AnimeTypeEnum
     {
-
         /// <summary>
         /// Special
         /// </summary>

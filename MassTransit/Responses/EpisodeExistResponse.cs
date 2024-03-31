@@ -4,16 +4,16 @@ using System.ComponentModel.DataAnnotations;
 namespace MovieApi.MassTransit.Responses
 {
     /// <summary>
-    /// Model for response on ContentExistEvent
+    /// Model for response on EpisodeExistEvent
     /// </summary>
-    [MessageUrn("ContentExistResponse")]
-    public class ContentExistResponse
+    [MessageUrn("EpisodeExistResponse")]
+    public class EpisodeExistResponse
     {
         /// <summary>
-        /// Gets or Sets ContentId
+        /// Gets or Sets EpisodeId
         /// </summary>
         [Required]
-        public string ContentId { get; set; } = null!;
+        public string EpisodeId { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets ContentId

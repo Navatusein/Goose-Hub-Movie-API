@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using MassTransit.Testing;
 using MovieApi.MassTransit.Events;
 using MovieApi.Models;
 using MovieApi.Services.DataServices;
@@ -28,13 +29,8 @@ namespace MovieApi.MassTransit.Consumers
         public async Task Consume(ConsumeContext<SerialAddContentEvent> context)
         {
             var message = context.Message;
-            var content = new Content()
-            {
-                Path = message.Path,
-                Quality = message.Quality
-            };
 
-            await _dataService.AddEpisodeContentAsync(message.EpisodeId, content);
+            await _dataService.AddEpisodeContentAsync(message.EpisodeId, message.Content);
         }
     }
 }

@@ -51,6 +51,6 @@ namespace MovieApi.Dtos
         /// <summary>
         /// Gets or Sets Episodes
         /// </summary>
-        public List<EpisodeDto> Episodes { get; set; } = null!;
+        public List<EpisodeDto>? Episodes { get; set; }
     }
 }

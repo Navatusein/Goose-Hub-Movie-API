@@ -67,6 +67,11 @@ namespace MovieApi.Dtos
         public StatusEnum? Status { get; set; }
 
         /// <summary>
+        /// Gets or Sets AnimeType
+        /// </summary>
+        public AnimeTypeEnum? AnimeType { get; set; }
+
+        /// <summary>
         /// Gets or Sets Query
         /// </summary>
         public SortParam Sort { get; set; }

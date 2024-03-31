@@ -9,16 +9,16 @@ namespace MovieApi.MassTransit.Consumers
     /// <summary>
     /// Consumer for ContentExistEvent
     /// </summary>
-    public class ContentExistConsumer : IConsumer<ContentExistEvent>
+    public class EpisodeExistConsumer : IConsumer<EpisodeExistEvent>
     {
-        private static Serilog.ILogger Logger => Serilog.Log.ForContext<ContentExistConsumer>();
+        private static Serilog.ILogger Logger => Serilog.Log.ForContext<EpisodeExistConsumer>();
 
         private readonly CommonService _dataService;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public ContentExistConsumer(CommonService dataService)
+        public EpisodeExistConsumer(CommonService dataService)
         {
             _dataService = dataService;
         }
@@ -26,15 +26,15 @@ namespace MovieApi.MassTransit.Consumers
         /// <summary>
         /// Consume
         /// </summary>
-        public async Task Consume(ConsumeContext<ContentExistEvent> context)
+        public async Task Consume(ConsumeContext<EpisodeExistEvent> context)
         {
             var message = context.Message;
 
-            var isExists = await _dataService.ContentExist(message.ContentId);
+            var isExists = await _dataService.EpisodeExist(message.EpisodeId);
 
-            var response = new ContentExistResponse() 
-            { 
-                ContentId = message.ContentId,
+            var response = new EpisodeExistResponse() 
+            {
+                EpisodeId = message.EpisodeId,
                 IsExists = isExists
             };
 
