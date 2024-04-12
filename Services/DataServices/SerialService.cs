@@ -28,7 +28,7 @@ namespace MovieApi.Services.DataServices
         /// <summary>
         /// Get Serial
         /// </summary>
-        public async Task<Serial> GetAsync(string id)
+        public async Task<Serial> GetByIdAsync(string id)
         {
             var filter = Builders<Serial>.Filter.Eq("Id", id);
             var model = await _collection.Find(filter).FirstOrDefaultAsync();

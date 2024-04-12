@@ -37,7 +37,7 @@ namespace MovieApi.Services.DataServices
         /// <summary>
         /// Get Franchise
         /// </summary>
-        public async Task<Franchise> GetAsync(string id)
+        public async Task<Franchise> GetByIdAsync(string id)
         {
             var filter = Builders<Franchise>.Filter.Eq("Id", id);
             var model = await _collection.Find(filter).FirstOrDefaultAsync();

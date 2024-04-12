@@ -1,5 +1,7 @@
-﻿using Minio;
+﻿using MassTransit.Caching.Internals;
+using Minio;
 using Minio.DataModel.Args;
+using System.Security.AccessControl;
 
 namespace MovieApi.Service
 {
@@ -28,7 +30,7 @@ namespace MovieApi.Service
 
             _imageBucket = config.GetSection("MinIO:ImageBucket").Get<string>()!;
             _contentBucket = config.GetSection("MinIO:ContentBucket").Get<string>()!;
-            
+
             _minioClient = new MinioClient()
                 .WithEndpoint(endpoint)
                 .WithCredentials(accessKey, secretKey)
@@ -50,6 +52,40 @@ namespace MovieApi.Service
             var presignedUrl = await _minioClient.PresignedGetObjectAsync(presignedGetObjectArgs).ConfigureAwait(false);
 
             return presignedUrl;
+        }
+
+        /// <summary>
+        /// Upload image to MinIO
+        /// </summary>
+        public async Task<string> UploadImage(IFormFile file)
+        {
+            string extension = Path.GetExtension(file.FileName);
+            string objectName = Guid.NewGuid().ToString() + extension;
+
+            var stream = file.OpenReadStream();
+
+            var putObjectArgs = new PutObjectArgs()
+                .WithBucket(_imageBucket)
+                .WithObject(objectName)
+                .WithStreamData(stream)
+                .WithObjectSize(stream.Length)
+                .WithContentType(file.ContentType);
+
+            await _minioClient.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
+
+            return objectName;
+        }
+
+        /// <summary>
+        /// Remove image from MinIO
+        /// </summary>
+        public async Task RemoveImage(string path)
+        {
+            var removeObjectArgs = new RemoveObjectArgs()
+                .WithBucket(_imageBucket)
+                .WithObject(path);
+
+            await _minioClient.RemoveObjectAsync(removeObjectArgs).ConfigureAwait(false);
         }
 
         /// <summary>

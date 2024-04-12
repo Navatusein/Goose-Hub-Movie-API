@@ -3,7 +3,6 @@ using MongoDB.Driver;
 using MovieApi.Dtos;
 using MovieApi.Models;
 using MovieApi.Service;
-using System.Xml.Linq;
 
 namespace MovieApi.Services.DataServices
 {
@@ -107,7 +106,7 @@ namespace MovieApi.Services.DataServices
         /// <summary>
         /// Get Preview by Ids
         /// </summary>
-        public async Task<List<Preview>> GetPreviewsByIds(List<string> ids)
+        public async Task<List<Preview>> GetPreviewsByIdsAsync(List<string> ids)
         {
             var filter = Builders<Preview>.Filter.In("Id", ids);
 
@@ -116,9 +115,21 @@ namespace MovieApi.Services.DataServices
         }
 
         /// <summary>
+        /// Get Preview by Id
+        /// </summary>
+        public async Task<Preview> GetPreviewsByIdAsync(string id)
+        {
+            var filter = Builders<Preview>.Filter.Eq("Id", id);
+
+            var result = await _collection.Find(filter).FirstOrDefaultAsync();
+
+            return result;
+        }
+
+        /// <summary>
         /// Check content exist
         /// </summary>
-        public async Task<bool> ContentExist(string id)
+        public async Task<bool> ContentExistAsync(string id)
         {
             var filter = Builders<Preview>.Filter.Eq("Id", id);
             var result = await _collection.Find(filter).FirstOrDefaultAsync();
@@ -129,7 +140,7 @@ namespace MovieApi.Services.DataServices
         /// <summary>
         /// Check content exist
         /// </summary>
-        public async Task<bool> EpisodeExist(string id)
+        public async Task<bool> EpisodeExistAsync(string id)
         {
             var filter = Builders<Preview>.Filter.Or(
                 Builders<Preview>.Filter.ElemMatch("Seasons.Episodes", Builders<Preview>.Filter.Eq("Id", id)), 
@@ -138,6 +149,84 @@ namespace MovieApi.Services.DataServices
             var result = await _collection.Find(filter).FirstOrDefaultAsync();
 
             return result != null;
+        }
+
+        /// <summary>
+        /// Add Screenshot
+        /// </summary>
+        public async Task<bool> AddScreenshotAsync(string id, string filePath)
+        {
+            var filter = Builders<Preview>.Filter.Eq("Id", id);
+            var update = Builders<Preview>.Update.Push("ScreenshotPath", filePath);
+            var result = await _collection.UpdateOneAsync(filter, update);
+
+            return result.ModifiedCount > 0;
+        }
+
+        /// <summary>
+        /// Remove Screenshot
+        /// </summary>
+        public async Task<bool> RemoveScreenshotAsync(string id, string filePath)
+        {
+            var filter = Builders<Preview>.Filter.Eq("Id", id);
+            var update = Builders<Preview>.Update.Pull("ScreenshotPath", filePath);
+
+            var result = await _collection.UpdateOneAsync(filter, update);
+
+            return result.ModifiedCount > 0;
+        }
+
+
+        /// <summary>
+        /// Add Poster
+        /// </summary>
+        public async Task<bool> AddPosterAsync(string id, string filePath)
+        {
+            var filter = Builders<Preview>.Filter.Eq("Id", id);
+            var update = Builders<Preview>.Update.Set("PosterPath", filePath);
+
+            var result = await _collection.UpdateOneAsync(filter, update);
+
+            return result.ModifiedCount > 0;
+        }
+
+        /// <summary>
+        /// Remove Poster
+        /// </summary>
+        public async Task<bool> RemovePosterAsync(string id)
+        {
+            var filter = Builders<Preview>.Filter.Eq("Id", id);
+            var update = Builders<Preview>.Update.Set<string?>("PosterPath", null);
+
+            var result = await _collection.UpdateOneAsync(filter, update);
+
+            return result.ModifiedCount > 0;
+        }
+
+        /// <summary>
+        /// Add Banner
+        /// </summary>
+        public async Task<bool> AddBannerAsync(string id, string filePath)
+        {
+            var filter = Builders<Preview>.Filter.Eq("Id", id);
+            var update = Builders<Preview>.Update.Set("BannerPath", filePath);
+
+            var result = await _collection.UpdateOneAsync(filter, update);
+
+            return result.ModifiedCount > 0;
+        }
+
+        /// <summary>
+        /// Remove Banner
+        /// </summary>
+        public async Task<bool> RemoveBannerAsync(string id)
+        {
+            var filter = Builders<Preview>.Filter.Eq("Id", id);
+            var update = Builders<Preview>.Update.Set<string?>("BannerPath", null);
+
+            var result = await _collection.UpdateOneAsync(filter, update);
+
+            return result.ModifiedCount > 0;
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace MovieApi.Services.DataServices
         /// <summary>
         /// Get Movie
         /// </summary>
-        public async Task<Movie> GetAsync(string id)
+        public async Task<Movie> GetByIdAsync(string id)
         {
             var filter = Builders<Movie>.Filter.Eq("Id", id);
             var model = await _collection.Find(filter).FirstOrDefaultAsync();

@@ -30,7 +30,7 @@ namespace MovieApi.MassTransit.Consumers
         {
             var message = context.Message;
 
-            var isExists = await _dataService.EpisodeExist(message.EpisodeId);
+            var isExists = await _dataService.EpisodeExistAsync(message.EpisodeId);
 
             var response = new EpisodeExistResponse() 
             {

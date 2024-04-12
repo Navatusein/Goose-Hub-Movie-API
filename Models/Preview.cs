@@ -170,5 +170,11 @@ namespace MovieApi.Models
         /// </summary>
         [Required]
         public List<string> DirectedBy { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or Sets Studio
+        /// </summary>
+        [Required]
+        public string Studio { get; set; } = null!;
     }
 }

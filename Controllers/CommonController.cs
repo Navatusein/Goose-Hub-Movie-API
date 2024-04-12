@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieApi.Dtos;
-using MovieApi.Service;
 using MovieApi.Services.DataServices;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
 
 namespace MovieApi.Controllers
 {
@@ -87,7 +84,7 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(List<PreviewDto>), description: "OK")]
         public async Task<IActionResult> GetContentIds([FromBody] List<string> ids)
         {
-            var models = await _dataService.GetPreviewsByIds(ids);
+            var models = await _dataService.GetPreviewsByIdsAsync(ids);
             var dtos = models.Select(x => _mapper.Map<PreviewDto>(x)).ToList();
 
             return StatusCode(200, dtos);

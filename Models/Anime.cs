@@ -63,12 +63,6 @@ namespace MovieApi.Models
         public AnimeTypeEnum AnimeType { get; set; }
 
         /// <summary>
-        /// Gets or Sets Studio
-        /// </summary>
-        [Required]
-        public string Studio { get; set; } = null!;
-
-        /// <summary>
         /// Gets or Sets Content
         /// </summary>
         public List<Content>? Content { get; set; }

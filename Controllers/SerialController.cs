@@ -45,7 +45,7 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> Get([FromRoute(Name = "id")][Required] string id)
         {
-            var model = await _dataService.GetAsync(id);
+            var model = await _dataService.GetByIdAsync(id);
 
             if (model == null)
                 return StatusCode(404, new ErrorDto("Serial not found", "404"));

@@ -32,11 +32,11 @@ namespace MovieApi.MassTransit.Consumers
           
             if (message.IsEpisode)
             {
-                await _dataService.AddEpisodeContentAsync(message.Id, message.Content);
+                await _dataService.AddEpisodeContentAsync(message.ContentId, message.Content);
             }
             else
             {
-                await _dataService.AddContentAsync(message.Id, message.Content);
+                await _dataService.AddContentAsync(message.ContentId, message.Content);
             }
         }
     }

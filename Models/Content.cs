@@ -8,15 +8,15 @@
         /// <summary>
         /// 480p
         /// </summary>
-        SD,
+        SD=480,
         /// <summary>
         /// 720p
         /// </summary>
-        HD,
+        HD=720,
         /// <summary>
         /// 1080p
         /// </summary>
-        FullHD
+        FullHD=1080
     }
 
     /// <summary>

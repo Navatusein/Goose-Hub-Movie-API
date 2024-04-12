@@ -12,10 +12,10 @@ namespace MovieApi.MassTransit.Events
     public class AnimeAddContentEvent
     {
         /// <summary>
-        /// Gets or Sets Id
+        /// Gets or Sets ContentId
         /// </summary>
         [Required]
-        public string Id { get; set; } = null!;
+        public string ContentId { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets IsEpisode
