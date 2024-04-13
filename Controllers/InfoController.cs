@@ -16,7 +16,7 @@ namespace MovieApi.Controllers
     /// <summary>
     /// Info Controller
     /// </summary>
-    [Route("api/movie-api/v1/info")]
+    [Route("v1/info")]
     [ApiController]
     public class InfoController : ControllerBase
     {

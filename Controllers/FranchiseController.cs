@@ -15,7 +15,7 @@ namespace MovieApi.Controllers
     /// <summary>
     /// Franchise Controller
     /// </summary>
-    [Route("api/movie-api/v1/franchise")]
+    [Route("v1/franchise")]
     [ApiController]
     public class FranchiseController : ControllerBase
     {

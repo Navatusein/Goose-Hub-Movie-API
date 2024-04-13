@@ -12,7 +12,7 @@ namespace MovieApi.Controllers
     /// <summary>
     /// Upload Controller
     /// </summary>
-    [Route("api/movie-api/v1/upload")]
+    [Route("v1/upload")]
     [ApiController]
     public class UploadController : ControllerBase
     {

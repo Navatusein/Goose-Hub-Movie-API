@@ -15,7 +15,7 @@ namespace MovieApi.Controllers
     /// <summary>
     /// Movie Controller
     /// </summary>
-    [Route("api/movie-api/v1/movie")]
+    [Route("v1/movie")]
     [ApiController]
     public class MovieController : ControllerBase
     {

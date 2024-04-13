@@ -11,7 +11,7 @@ namespace MovieApi.Controllers
     /// <summary>
     /// Common Controller
     /// </summary>
-    [Route("/api/movie-api/v1/content")]
+    [Route("v1/content")]
     [ApiController]
     public class CommonController : ControllerBase
     {
