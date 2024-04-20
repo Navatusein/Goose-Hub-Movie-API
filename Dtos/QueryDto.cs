@@ -62,14 +62,14 @@ namespace MovieApi.Dtos
         public ContentTypeEnum? ContentType { get; set; }
 
         /// <summary>
-        /// Gets or Sets Status
+        /// Gets or Sets StatusList
         /// </summary>
-        public StatusEnum? Status { get; set; }
+        public List<StatusEnum> Statuses { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets AnimeType
+        /// Gets or Sets AnimeTypeList
         /// </summary>
-        public AnimeTypeEnum? AnimeType { get; set; }
+        public List<AnimeTypeEnum> AnimeTypes { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets Query

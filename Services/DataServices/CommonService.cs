@@ -240,11 +240,11 @@ namespace MovieApi.Services.DataServices
             if (queryDto.ContentType != null)
                 filters.Add(filterBuilder.Eq("ContentType", queryDto.ContentType));
 
-            if (queryDto.Status != null)
-                filters.Add(filterBuilder.Eq("Status", queryDto.Status));
+            if (queryDto.Statuses.Count != 0)
+                filters.Add(filterBuilder.In("Status", queryDto.Statuses));
 
-            if (queryDto.AnimeType != null)
-                filters.Add(filterBuilder.Eq("AnimeType", queryDto.AnimeType));
+            if (queryDto.AnimeTypes.Count != 0)
+                filters.Add(filterBuilder.In("AnimeType", queryDto.AnimeTypes));
 
             if (queryDto.Genres.Count != 0)
                 filters.Add(filterBuilder.All("Genres", queryDto.Genres));
