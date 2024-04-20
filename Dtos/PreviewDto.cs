@@ -72,7 +72,7 @@ namespace MovieApi.Dtos
         /// Gets or Sets Release
         /// </summary>
         [Required]
-        public DateOnly Release { get; set; }
+        public DateOnly? Release { get; set; }
 
         /// <summary>
         /// Gets or Sets AgeRestriction
@@ -98,11 +98,5 @@ namespace MovieApi.Dtos
         /// </summary>
         [Required]
         public List<string> DirectedBy { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or Sets Studio
-        /// </summary>
-        [Required]
-        public string Studio { get; set; } = null!;
     }
 }

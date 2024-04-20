@@ -46,5 +46,11 @@ namespace MovieApi.Dtos
         /// Gets or Sets Episodes
         /// </summary>
         public List<EpisodeDto>? Episodes { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Studio
+        /// </summary>
+        [Required]
+        public string Studio { get; set; } = null!;
     }
 }

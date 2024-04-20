@@ -71,5 +71,11 @@ namespace MovieApi.Models
         /// Gets or Sets Episodes
         /// </summary>
         public List<Episode>? Episodes { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Studio
+        /// </summary>
+        [Required]
+        public string Studio { get; set; } = null!;
     }
 }
