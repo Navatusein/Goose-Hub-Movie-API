@@ -71,7 +71,6 @@ namespace MovieApi.Dtos
         /// <summary>
         /// Gets or Sets Release
         /// </summary>
-        [Required]
         public DateOnly? Release { get; set; }
 
         /// <summary>
