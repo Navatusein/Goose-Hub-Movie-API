@@ -37,7 +37,7 @@ namespace MovieApi.Controllers
         /// <response code="201">OK</response>
         [HttpPost]
         [Route("screenshot")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [SwaggerResponse(statusCode: 201, description: "OK")]
         public async Task<IActionResult> UploadScreenshot([FromForm] UploadDto uploadDto)
         {
@@ -60,7 +60,7 @@ namespace MovieApi.Controllers
         /// <response code="201">OK</response>
         [HttpPost]
         [Route("poster")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [SwaggerResponse(statusCode: 201, description: "OK")]
         public async Task<IActionResult> UploadPoster([FromForm] UploadDto uploadDto)
         {
@@ -83,7 +83,7 @@ namespace MovieApi.Controllers
         /// <response code="201">OK</response>
         [HttpPost]
         [Route("banner")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [SwaggerResponse(statusCode: 201, description: "OK")]
         public async Task<IActionResult> UploadBanner([FromForm] UploadDto uploadDto)
         {
@@ -107,7 +107,7 @@ namespace MovieApi.Controllers
         /// <response code="200">OK</response>
         [HttpDelete]
         [Route("screenshot/{id}/{path}")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [SwaggerResponse(statusCode: 200, description: "OK")]
         public async Task<IActionResult> DeleteScreenshot([FromRoute(Name = "id")][Required] string id, [FromRoute(Name = "path")][Required] string path)
         {
@@ -133,7 +133,7 @@ namespace MovieApi.Controllers
         /// <response code="200">OK</response>
         [HttpDelete]
         [Route("poster/{id}")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [SwaggerResponse(statusCode: 200, description: "OK")]
         public async Task<IActionResult> DeletePoster([FromRoute(Name = "id")][Required] string id)
         {
@@ -160,7 +160,7 @@ namespace MovieApi.Controllers
         /// <response code="200">OK</response>
         [HttpDelete]
         [Route("banner/{id}")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [SwaggerResponse(statusCode: 200, description: "OK")]
         public async Task<IActionResult> DeleteBanner([FromRoute(Name = "id")][Required] string id)
         {
