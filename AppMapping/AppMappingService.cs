@@ -23,13 +23,19 @@ namespace MovieApi.AppMapping
 
             CreateMap<Anime, AnimeDto>()
                 .ForMember(dest => dest.ScreenshotUrls, opt => opt.MapFrom<ImageListUrlResolver, List<string>>(src => src.ScreenshotPath))
+                .ForMember(dest => dest.PosterUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.PosterPath))
+                .ForMember(dest => dest.BannerUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.BannerPath))
                 .ReverseMap();
 
             CreateMap<Movie, MovieDto>()
                 .ForMember(dest => dest.ScreenshotUrls, opt => opt.MapFrom<ImageListUrlResolver, List<string>>(src => src.ScreenshotPath))
+                .ForMember(dest => dest.PosterUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.PosterPath))
+                .ForMember(dest => dest.BannerUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.BannerPath))
                 .ReverseMap();
 
             CreateMap<Serial, SerialDto>()
+                .ForMember(dest => dest.PosterUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.PosterPath))
+                .ForMember(dest => dest.BannerUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.BannerPath))
                 .ForMember(dest => dest.ScreenshotUrls, opt => opt.MapFrom<ImageListUrlResolver, List<string>>(src => src.ScreenshotPath))
                 .ReverseMap();
 

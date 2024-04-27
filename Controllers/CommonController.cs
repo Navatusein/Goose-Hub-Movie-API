@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieApi.Dtos;
+using MovieApi.Models;
 using MovieApi.Services.DataServices;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
@@ -88,6 +89,28 @@ namespace MovieApi.Controllers
             var dtos = models.Select(x => _mapper.Map<PreviewDto>(x)).ToList();
 
             return StatusCode(200, dtos);
+        }
+
+        /// <summary>
+        /// Get Content By Ids
+        /// </summary>
+        /// <response code="200">OK</response>
+        [HttpPost]
+        [Route("test/{id}")]
+        [AllowAnonymous]
+        [SwaggerResponse(statusCode: 200, type: typeof(PreviewDto), description: "OK")]
+        public async Task<IActionResult> Test([FromRoute] string id, [FromServices] MovieService movieService)
+        {
+            var preview = await _dataService.GetPreviewsByIdAsync(id);
+
+            if ((int)preview.DataType == 1)
+            {
+                var model = await movieService.GetByIdAsync(id);
+                PreviewDto dto = _mapper.Map<MovieDto>(model);
+                return StatusCode(200, dto);
+            }
+
+            return StatusCode(200);
         }
     }
 }
