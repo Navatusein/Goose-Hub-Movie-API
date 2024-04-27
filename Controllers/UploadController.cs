@@ -18,13 +18,13 @@ namespace MovieApi.Controllers
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<UploadController>();
 
-        private readonly CommonService _dataService;
+        private readonly PreviewService _dataService;
         private readonly MinioService _minioService;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public UploadController(CommonService dataService, MinioService minioService)
+        public UploadController(PreviewService dataService, MinioService minioService)
         {
             _dataService = dataService;
             _minioService = minioService;

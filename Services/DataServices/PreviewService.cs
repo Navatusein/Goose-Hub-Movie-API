@@ -9,16 +9,16 @@ namespace MovieApi.Services.DataServices
     /// <summary>
     /// Common MongoDB service
     /// </summary>
-    public class CommonService
+    public class PreviewService
     {
-        private static Serilog.ILogger Logger => Serilog.Log.ForContext<CommonService>();
+        private static Serilog.ILogger Logger => Serilog.Log.ForContext<PreviewService>();
 
         private readonly IMongoCollection<Preview> _collection;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public CommonService(IConfiguration config, MongoDbConnectionService connectionService)
+        public PreviewService(IConfiguration config, MongoDbConnectionService connectionService)
         {
             var collectionName = config.GetSection("MongoDB:CollectionContentName").Get<string>();
 

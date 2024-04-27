@@ -13,12 +13,12 @@ namespace MovieApi.MassTransit.Consumers
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<ContentExistConsumer>();
 
-        private readonly CommonService _dataService;
+        private readonly PreviewService _dataService;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public ContentExistConsumer(CommonService dataService)
+        public ContentExistConsumer(PreviewService dataService)
         {
             _dataService = dataService;
         }

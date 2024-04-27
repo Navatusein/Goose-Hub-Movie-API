@@ -14,52 +14,58 @@ namespace MovieApi.Controllers
     /// </summary>
     [Route("v1/content")]
     [ApiController]
-    public class CommonController : ControllerBase
+    public class ContentController : ControllerBase
     {
-        private static Serilog.ILogger Logger => Serilog.Log.ForContext<CommonController>();
+        private static Serilog.ILogger Logger => Serilog.Log.ForContext<ContentController>();
 
         private readonly IMapper _mapper;
-        private readonly CommonService _dataService;
+        private readonly PreviewService _previewService;
+        private readonly MovieService _movieService;
+        private readonly SerialService _serialService;
+        private readonly AnimeService _animeService;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public CommonController(IMapper mapper, CommonService dataService)
+        public ContentController(IMapper mapper, PreviewService previewService, MovieService movieService, SerialService serialService, AnimeService animeService)
         {
             _mapper = mapper;
-            _dataService = dataService;
+            _previewService = previewService;
+            _movieService = movieService;
+            _serialService = serialService;
+            _animeService = animeService;
         }
 
         /// <summary>
-        /// Get Content By Franchise
+        /// Get Preview By Franchise
         /// </summary>
         /// <param name="id"></param>
         /// <response code="200">OK</response>
         [HttpGet]
-        [Route("franchise/{id}")]
+        [Route("preview/franchise/{id}")]
         [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(List<PreviewDto>), description: "OK")]
         public async Task<IActionResult> GetContentFranchiseId([FromRoute(Name = "id")][Required] string id)
         {
-            var models = await _dataService.GetPreviewsByFranchiseAsync(id);
+            var models = await _previewService.GetPreviewsByFranchiseAsync(id);
             var dtos = models.Select(x => _mapper.Map<PreviewDto>(x)).ToList();
 
             return StatusCode(200, dtos);
         }
 
         /// <summary>
-        /// Get Content By Query
+        /// Get Preview By Query
         /// </summary>
         /// <param name="query"></param>
         /// <response code="200">OK</response>
         [HttpPost]
-        [Route("query")]
+        [Route("preview/query")]
         [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(PaginationDto), description: "OK")]
         public async Task<IActionResult> GetContentQuery([FromBody] QueryDto query)
         {
-            var models = await _dataService.GetPreviewsByQueryAsync(query);
-            var totalCount = await _dataService.CountPreviewsByQueryAsync(query);
+            var models = await _previewService.GetPreviewsByQueryAsync(query);
+            var totalCount = await _previewService.CountPreviewsByQueryAsync(query);
 
             var dtos = models.Select(x => _mapper.Map<PreviewDto>(x)).ToList();
 
@@ -75,42 +81,55 @@ namespace MovieApi.Controllers
         }
 
         /// <summary>
-        /// Get Content By Ids
+        /// Get Preview By Ids
         /// </summary>
         /// <param name="ids"></param>
         /// <response code="200">OK</response>
         [HttpPost]
-        [Route("ids")]
+        [Route("preview/ids")]
         [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(List<PreviewDto>), description: "OK")]
         public async Task<IActionResult> GetContentIds([FromBody] List<string> ids)
         {
-            var models = await _dataService.GetPreviewsByIdsAsync(ids);
+            var models = await _previewService.GetPreviewsByIdsAsync(ids);
             var dtos = models.Select(x => _mapper.Map<PreviewDto>(x)).ToList();
 
             return StatusCode(200, dtos);
         }
 
+
         /// <summary>
-        /// Get Content By Ids
+        /// Get Content By Id
         /// </summary>
         /// <response code="200">OK</response>
         [HttpPost]
-        [Route("test/{id}")]
+        [Route("{id}")]
         [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(PreviewDto), description: "OK")]
-        public async Task<IActionResult> Test([FromRoute] string id, [FromServices] MovieService movieService)
+        public async Task<IActionResult> Test([FromRoute] string id)
         {
-            var preview = await _dataService.GetPreviewsByIdAsync(id);
+            var preview = await _previewService.GetPreviewsByIdAsync(id);
 
-            if ((int)preview.DataType == 1)
+            Preview model = null!;
+            PreviewDto previewDto = null!;
+
+            switch (preview.DataType)
             {
-                var model = await movieService.GetByIdAsync(id);
-                PreviewDto dto = _mapper.Map<MovieDto>(model);
-                return StatusCode(200, dto);
+                case DataTypeEnum.Movie:
+                    model = await _movieService.GetByIdAsync(id);
+                    previewDto = _mapper.Map<MovieDto>(model);
+                    break;
+                case DataTypeEnum.Serial:
+                    model = await _serialService.GetByIdAsync(id);
+                    previewDto = _mapper.Map<SerialDto>(model);
+                    break;
+                case DataTypeEnum.Anime:
+                    model = await _animeService.GetByIdAsync(id);
+                    previewDto = _mapper.Map<AnimeDto>(model);
+                    break;
             }
 
-            return StatusCode(200);
+            return StatusCode(200, previewDto);
         }
     }
 }

@@ -99,7 +99,7 @@ builder.Services.AddSingleton<AnimeService>();
 builder.Services.AddSingleton<MovieService>();
 builder.Services.AddSingleton<SerialService>();
 builder.Services.AddSingleton<FranchiseService>();
-builder.Services.AddSingleton<CommonService>();
+builder.Services.AddSingleton<PreviewService>();
 
 // Add MassTransit
 builder.Services.AddMassTransit(options =>

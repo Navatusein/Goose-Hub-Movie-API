@@ -13,6 +13,7 @@ namespace MovieApi.Services.DataServices
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<MovieService>();
 
         private readonly IMongoCollection<Movie> _collection;
+        private readonly IMongoCollection<Preview> _collectionTest;
 
         /// <summary>
         /// Constructor
@@ -22,6 +23,7 @@ namespace MovieApi.Services.DataServices
             var collectionName = config.GetSection("MongoDB:CollectionContentName").Get<string>();
 
             _collection = connectionService.Database.GetCollection<Movie>(collectionName);
+            _collectionTest = connectionService.Database.GetCollection<Preview>(collectionName);
         }
 
         /// <summary>
@@ -55,6 +57,21 @@ namespace MovieApi.Services.DataServices
             };
 
             model = await _collection.FindOneAndReplaceAsync(filter, model, options);
+            return model;
+        }
+
+        /// <summary>
+        /// Update Movie
+        /// </summary>
+        public async Task<Preview> UpdateTestAsync(string id, Preview model)
+        {
+            var filter = Builders<Preview>.Filter.Eq("Id", id);
+            var options = new FindOneAndReplaceOptions<Preview>()
+            {
+                ReturnDocument = ReturnDocument.After
+            };
+
+            model = await _collectionTest.FindOneAndReplaceAsync(filter, model, options);
             return model;
         }
 

@@ -23,13 +23,13 @@ namespace MovieApi.Controllers
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<InfoController>();
 
         private readonly IMapper _mapper;
-        private readonly CommonService _commonService;
+        private readonly PreviewService _commonService;
         private readonly FranchiseService _franchiseService;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public InfoController(IMapper mapper, CommonService commonService, FranchiseService franchiseService)
+        public InfoController(IMapper mapper, PreviewService commonService, FranchiseService franchiseService)
         {
             _mapper = mapper;
             _commonService = commonService;
