@@ -129,6 +129,12 @@ namespace MovieApi.Models
         public string Name { get; set; } = null!;
 
         /// <summary>
+        /// Gets or Sets OriginalName
+        /// </summary>
+        [Required]
+        public string OriginalName { get; set; } = null!;
+
+        /// <summary>
         /// Gets or Sets Description
         /// </summary>
         [Required]
