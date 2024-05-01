@@ -63,9 +63,9 @@ namespace MovieApi.Models
         public AnimeTypeEnum AnimeType { get; set; }
 
         /// <summary>
-        /// Gets or Sets Content
+        /// Gets or Sets ContentPath
         /// </summary>
-        public List<Content>? Content { get; set; }
+        public string? ContentPath { get; set; }
 
         /// <summary>
         /// Gets or Sets Episodes

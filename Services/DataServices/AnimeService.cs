@@ -71,10 +71,10 @@ namespace MovieApi.Services.DataServices
         /// <summary>
         /// Add Content
         /// </summary>
-        public async Task<bool> AddContentAsync(string id, Content content)
+        public async Task<bool> AddContentAsync(string id, string contentPath)
         {
             var filter = Builders<Anime>.Filter.Eq("Id", id);
-            var update = Builders<Anime>.Update.Push("Content", content);
+            var update = Builders<Anime>.Update.Set("ContentPath", contentPath);
             var options = new FindOneAndUpdateOptions<Anime>()
             {
                 ReturnDocument = ReturnDocument.After
@@ -88,10 +88,10 @@ namespace MovieApi.Services.DataServices
         /// <summary>
         /// Add Content To Episode
         /// </summary>
-        public async Task<bool> AddEpisodeContentAsync(string id, Content content)
+        public async Task<bool> AddEpisodeContentAsync(string id, string contentPath)
         {
             var filter = Builders<Anime>.Filter.ElemMatch("Episodes", Builders<Episode>.Filter.Eq("Id", id));
-            var update = Builders<Anime>.Update.Push("Episodes.$[e].Content", content);
+            var update = Builders<Anime>.Update.Set("Episodes.$[e].ContentPath", contentPath);
 
             var options = new UpdateOptions
             {

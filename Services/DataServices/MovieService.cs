@@ -88,10 +88,10 @@ namespace MovieApi.Services.DataServices
         /// <summary>
         /// Add Content
         /// </summary>
-        public async Task<bool> AddContentAsync(string id, Content content)
+        public async Task<bool> AddContentAsync(string id, string contentPath)
         {
             var filter = Builders<Movie>.Filter.Eq("Id", id);
-            var update = Builders<Movie>.Update.Push("Content", content);
+            var update = Builders<Movie>.Update.Set("ContentPath", contentPath);
             var options = new FindOneAndUpdateOptions<Movie>()
             {
                 ReturnDocument = ReturnDocument.After

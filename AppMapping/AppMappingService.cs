@@ -25,12 +25,14 @@ namespace MovieApi.AppMapping
                 .ForMember(dest => dest.ScreenshotUrls, opt => opt.MapFrom<ImageListUrlResolver, List<string>>(src => src.ScreenshotPath))
                 .ForMember(dest => dest.PosterUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.PosterPath))
                 .ForMember(dest => dest.BannerUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.BannerPath))
+                .ForMember(dest => dest.ContentUrl, opt => opt.MapFrom<ContentUrlResolver, string?>(src => src.ContentPath))
                 .ReverseMap();
 
             CreateMap<Movie, MovieDto>()
                 .ForMember(dest => dest.ScreenshotUrls, opt => opt.MapFrom<ImageListUrlResolver, List<string>>(src => src.ScreenshotPath))
                 .ForMember(dest => dest.PosterUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.PosterPath))
                 .ForMember(dest => dest.BannerUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.BannerPath))
+                .ForMember(dest => dest.ContentUrl, opt => opt.MapFrom<ContentUrlResolver, string?>(src => src.ContentPath))
                 .ReverseMap();
 
             CreateMap<Serial, SerialDto>()
@@ -44,12 +46,9 @@ namespace MovieApi.AppMapping
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id ?? ObjectId.GenerateNewId().ToString()));
 
             CreateMap<Episode, EpisodeDto>()
+                .ForMember(dest => dest.ContentUrl, opt => opt.MapFrom<ContentUrlResolver, string?>(src => src.ContentPath))
                 .ReverseMap()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id ?? ObjectId.GenerateNewId().ToString()));
-
-            CreateMap<Content, ContentDto>()
-                .ForMember(dest => dest.Url, opt => opt.MapFrom<ContentUrlResolver, string>(src => src.Path))
-                .ReverseMap();
 
             CreateMap<Franchise, FranchiseDto>()
                 .ReverseMap();

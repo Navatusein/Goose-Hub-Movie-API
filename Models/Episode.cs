@@ -30,9 +30,8 @@ namespace MovieApi.Models
         public string? Name { get; set; }
 
         /// <summary>
-        /// Gets or Sets Content
+        /// Gets or Sets ContentPath
         /// </summary>
-        [Required]
-        public List<Content> Content { get; set; } = null!;
+        public string? ContentPath { get; set; }
     }
 }

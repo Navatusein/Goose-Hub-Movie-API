@@ -1,8 +1,9 @@
 ﻿using MassTransit;
-using MovieApi.Controllers;
 using MovieApi.MassTransit.Events;
 using MovieApi.Models;
+using MovieApi.Service;
 using MovieApi.Services.DataServices;
+using System.Text;
 
 namespace MovieApi.MassTransit.Consumers
 {
@@ -14,13 +15,15 @@ namespace MovieApi.MassTransit.Consumers
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<MovieAddContentConsumer>();
 
         private readonly MovieService _dataService;
+        private readonly MinioService _minioService;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public MovieAddContentConsumer(MovieService dataService)
+        public MovieAddContentConsumer(MovieService dataService, MinioService minioService)
         {
             _dataService = dataService;
+            _minioService = minioService;
         }
 
         /// <summary>
@@ -29,8 +32,12 @@ namespace MovieApi.MassTransit.Consumers
         public async Task Consume(ConsumeContext<MovieAddContentEvent> context)
         {
             var message = context.Message;
+            var filePath = $"{message.ContentFileName}/main.m3u8";
 
-            await _dataService.AddContentAsync(message.MovieId, message.Content);
+            var fileExists = await _minioService.GenerateHlsDescriptorAsync(filePath, message.Quality);
+            
+            if (!fileExists)
+                await _dataService.AddContentAsync(message.MovieId, filePath);
         }
     }
 }

@@ -38,9 +38,14 @@ namespace MovieApi.Dtos
         public AnimeTypeEnum AnimeType { get; set; }
 
         /// <summary>
-        /// Gets or Sets Content
+        /// Gets or Sets ContentPath
         /// </summary>
-        public List<ContentDto>? Content { get; set; }
+        public string? ContentPath { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ContentUrl
+        /// </summary>
+        public string? ContentUrl { get; set; }
 
         /// <summary>
         /// Gets or Sets Episodes

@@ -24,9 +24,15 @@ namespace MovieApi.MassTransit.Events
         public bool IsEpisode { get; set; }
 
         /// <summary>
-        /// Gets or Sets IsEpisode
+        /// Gets or Sets ContentFileName
         /// </summary>
         [Required]
-        public Content Content { get; set; } = null!;
+        public string ContentFileName { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or Sets Quality
+        /// </summary>
+        [Required]
+        public ContentQuality Quality { get; set; }
     }
 }

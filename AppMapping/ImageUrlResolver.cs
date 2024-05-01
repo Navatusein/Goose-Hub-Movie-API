@@ -32,7 +32,7 @@ namespace MovieApi.AppMapping
             if (sourceMember == null)
                 return null;
 
-            return _minioService.GetImagePresignedUrl(sourceMember).Result;
+            return _minioService.GetImageUrlAsync(sourceMember).Result;
         }
     }
 }

@@ -46,7 +46,7 @@ namespace MovieApi.Controllers
             if (!isExists)
                 return StatusCode(404, new ErrorDto("Content not found", "404"));
 
-            string filePath = await _minioService.UploadImage(uploadDto.File);
+            string filePath = await _minioService.UploadImageAsync(uploadDto.File);
 
             await _dataService.AddScreenshotAsync(uploadDto.ContentId, filePath);
 
@@ -69,7 +69,7 @@ namespace MovieApi.Controllers
             if (!isExists)
                 return StatusCode(404, new ErrorDto("Content not found", "404"));
 
-            string filePath = await _minioService.UploadImage(uploadDto.File);
+            string filePath = await _minioService.UploadImageAsync(uploadDto.File);
 
             await _dataService.AddPosterAsync(uploadDto.ContentId, filePath);
 
@@ -92,7 +92,7 @@ namespace MovieApi.Controllers
             if (!isExists)
                 return StatusCode(404, new ErrorDto("Content not found", "404"));
 
-            string filePath = await _minioService.UploadImage(uploadDto.File);
+            string filePath = await _minioService.UploadImageAsync(uploadDto.File);
 
             await _dataService.AddBannerAsync(uploadDto.ContentId, filePath);
 
@@ -121,7 +121,7 @@ namespace MovieApi.Controllers
             if (!isDeleted)
                 return StatusCode(404, new ErrorDto("Screenshot not found", "404"));
 
-            await _minioService.RemoveImage(path);
+            await _minioService.RemoveImageAsync(path);
 
             return StatusCode(200);
         }
@@ -148,7 +148,7 @@ namespace MovieApi.Controllers
                 return StatusCode(404, new ErrorDto("Poster not found", "404"));
 
             await _dataService.RemovePosterAsync(id);
-            await _minioService.RemoveImage(preview.PosterPath!);
+            await _minioService.RemoveImageAsync(preview.PosterPath!);
 
             return StatusCode(200);
         }
@@ -175,7 +175,7 @@ namespace MovieApi.Controllers
                 return StatusCode(404, new ErrorDto("Banner not found", "404"));
 
             await _dataService.RemoveBannerAsync(id);
-            await _minioService.RemoveImage(preview.BannerPath!);
+            await _minioService.RemoveImageAsync(preview.BannerPath!);
 
             return StatusCode(200);
         }

@@ -29,7 +29,7 @@ namespace MovieApi.AppMapping
         /// </summary>
         public List<string> Resolve(object source, object destination, List<string> sourceMember, List<string> destMember, ResolutionContext context)
         {
-            return sourceMember.Select(x => _minioService.GetImagePresignedUrl(x).Result).ToList();
+            return sourceMember.Select(x => _minioService.GetImageUrlAsync(x).Result).ToList();
         }
     }
 }

@@ -72,10 +72,10 @@ namespace MovieApi.Services.DataServices
         /// <summary>
         /// Add Content To Episode
         /// </summary>
-        public async Task<bool> AddEpisodeContentAsync(string id, Content content)
+        public async Task<bool> AddEpisodeContentAsync(string id, string contentPath)
         {
             var filter = Builders<Serial>.Filter.ElemMatch("Seasons.Episodes", Builders<Episode>.Filter.Eq("Id", id));
-            var update = Builders<Serial>.Update.Push("Seasons.$[s].Episodes.$[e].Content", content);
+            var update = Builders<Serial>.Update.Set("Seasons.$[s].Episodes.$[e].ContentPath", contentPath);
 
             var options = new UpdateOptions
             {

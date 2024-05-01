@@ -27,8 +27,8 @@ namespace MovieApi.Models
         public List<string> ScreenshotPath { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets Content
+        /// Gets or Sets ContentPath
         /// </summary>
-        public List<Content>? Content { get; set; }
+        public string? ContentPath { get; set; }
     }
 }
