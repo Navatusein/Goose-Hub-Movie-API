@@ -68,6 +68,16 @@ namespace MovieApi.Models
         public string? ContentPath { get; set; }
 
         /// <summary>
+        /// Gets or Sets EpisodesCount
+        /// </summary>
+        public string? EpisodesCount { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or Sets NextEpisodeDate
+        /// </summary>
+        public DateTime? NextEpisodeDate { get; set; }
+
+        /// <summary>
         /// Gets or Sets Episodes
         /// </summary>
         public List<Episode>? Episodes { get; set; }
