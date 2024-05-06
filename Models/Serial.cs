@@ -30,13 +30,13 @@ namespace MovieApi.Models
         /// Gets or Sets EpisodesCount
         /// </summary>
         [Required]
-        public string EpisodesCount { get; set; } = null!;
+        public string? EpisodesCount { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets NextEpisodeDate
         /// </summary>
         [Required]
-        public DateTime NextEpisodeDate { get; set; }
+        public DateTime? NextEpisodeDate { get; set; }
 
         /// <summary>
         /// Gets or Sets Seasons
