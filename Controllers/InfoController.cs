@@ -22,18 +22,14 @@ namespace MovieApi.Controllers
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<InfoController>();
 
-        private readonly IMapper _mapper;
         private readonly PreviewService _commonService;
-        private readonly FranchiseService _franchiseService;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public InfoController(IMapper mapper, PreviewService commonService, FranchiseService franchiseService)
+        public InfoController(PreviewService commonService)
         {
-            _mapper = mapper;
             _commonService = commonService;
-            _franchiseService = franchiseService;
         }
 
         /// <summary>
@@ -84,23 +80,6 @@ namespace MovieApi.Controllers
             };
 
             return StatusCode(200, yearInfoDto);
-        }
-
-        /// <summary>
-        /// Get Franchise
-        /// </summary>
-        /// <param name="query"></param>
-        /// <response code="200">OK</response>
-        [HttpGet]
-        [Route("franchise")]
-        [AllowAnonymous]
-        [SwaggerResponse(statusCode: 200, type: typeof(List<string>), description: "OK")]
-        public async Task<IActionResult> GetInfoFranchise([FromQuery] string? query)
-        {
-            var models = await _franchiseService.GetByQueryAsync(query ?? "");
-            var dtos = models.Select(x => _mapper.Map<FranchiseDto>(x)).ToList();
-
-            return StatusCode(200, dtos);
         }
     }
 }

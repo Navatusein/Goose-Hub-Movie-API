@@ -33,6 +33,23 @@ namespace MovieApi.Controllers
             _dataService = dataService;
         }
 
+
+        /// <summary>
+        /// Get Franchise
+        /// </summary>
+        /// <param name="query"></param>
+        /// <response code="200">OK</response>
+        [HttpGet]
+        [AllowAnonymous]
+        [SwaggerResponse(statusCode: 200, type: typeof(List<string>), description: "OK")]
+        public async Task<IActionResult> GetInfoFranchise([FromQuery] string? query)
+        {
+            var models = await _dataService.GetByQueryAsync(query ?? "");
+            var dtos = models.Select(x => _mapper.Map<FranchiseDto>(x)).ToList();
+
+            return StatusCode(200, dtos);
+        }
+
         /// <summary>
         /// Get Franchise By Id
         /// </summary>
@@ -41,6 +58,7 @@ namespace MovieApi.Controllers
         /// <response code="404">Not Found</response>
         [HttpGet]
         [Route("{id}")]
+        [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(FranchiseDto), description: "OK")]
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> Get([FromRoute(Name = "id")][Required] string id)
