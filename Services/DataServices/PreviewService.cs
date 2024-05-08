@@ -73,9 +73,11 @@ namespace MovieApi.Services.DataServices
         public async Task<List<Preview>> GetPreviewsByQueryAsync(QueryDto queryDto)
         {
             var filter = GetQueryFilter(queryDto);
+            var sort = Builders<Preview>.Sort.Descending("Release");
             var result = await _collection.Find(filter)
                 .Skip((queryDto.Page - 1) * queryDto.PageSize)
                 .Limit(queryDto.PageSize)
+                .Sort(sort)
                 .ToListAsync();
 
             return result;
