@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml.Linq;
 
-namespace MovieApi.Dto
+namespace MovieApi.Models
 {
     /// <summary>
     /// Content status enum
@@ -36,7 +38,6 @@ namespace MovieApi.Dto
     /// </summary>
     public enum DataTypeEnum
     {
-
         /// <summary>
         /// Movie
         /// </summary>
@@ -58,11 +59,10 @@ namespace MovieApi.Dto
     /// </summary>
     public enum ContentTypeEnum
     {
-
         /// <summary>
-        /// Moive
+        /// Movie
         /// </summary>
-        Moive = 1,
+        Movie = 1,
 
         /// <summary>
         /// Serial
@@ -83,13 +83,22 @@ namespace MovieApi.Dto
     /// <summary>
     /// Parent model for anime, serial, movie
     /// </summary>
-    public class PreviewDto
+    [BsonDiscriminator(RootClass = true)]
+    [BsonKnownTypes(typeof(Movie), typeof(Anime), typeof(Serial))]
+    public class Preview
     {
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [Required]
-        public string Id { get; set; } = null!;
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? Id { get; set; }
+
+        /// <summary>
+        /// Gets or Sets FranchiseId
+        /// </summary>
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? FranchiseId { get; set; }
 
         /// <summary>
         /// Gets or Sets DataType
@@ -104,16 +113,26 @@ namespace MovieApi.Dto
         public ContentTypeEnum ContentType { get; set; }
 
         /// <summary>
-        /// Gets or Sets PosterUrl
+        /// Gets or Sets PosterPath
         /// </summary>
-        [Required]
-        public string PosterUrl { get; set; } = null!;
+        public string? PosterPath { get; set; }
+
+        /// <summary>
+        /// Gets or Sets BannerPath
+        /// </summary>
+        public string? BannerPath { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
         /// </summary>
         [Required]
         public string Name { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or Sets OriginalName
+        /// </summary>
+        [Required]
+        public string OriginalName { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets Description
@@ -131,7 +150,7 @@ namespace MovieApi.Dto
         /// Gets or Sets Release
         /// </summary>
         [Required]
-        public DateTime Release { get; set; }
+        public DateOnly? Release { get; set; }
 
         /// <summary>
         /// Gets or Sets AgeRestriction

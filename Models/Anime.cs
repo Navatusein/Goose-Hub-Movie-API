@@ -2,14 +2,13 @@
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 
-namespace MovieApi.Dto
+namespace MovieApi.Models
 {
     /// <summary>
     /// Anime type enum
     /// </summary>
     public enum AnimeTypeEnum
     {
-
         /// <summary>
         /// Special
         /// </summary>
@@ -39,7 +38,7 @@ namespace MovieApi.Dto
     /// <summary>
     /// Model for anime
     /// </summary>
-    public class AnimeDto : PreviewDto
+    public class Anime : Preview
     {
         /// <summary>
         /// Gets or Sets Time
@@ -53,14 +52,9 @@ namespace MovieApi.Dto
         public string TrailerUrl { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets Screenshots
+        /// Gets or Sets ScreenshotPath
         /// </summary>
-        public List<string> Screenshots { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or Sets ScreenshotIds
-        /// </summary>
-        public List<string> ScreenshotIds { get; set; } = null!;
+        public List<string> ScreenshotPath { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets Type
@@ -69,24 +63,29 @@ namespace MovieApi.Dto
         public AnimeTypeEnum AnimeType { get; set; }
 
         /// <summary>
-        /// Gets or Sets Studio
+        /// Gets or Sets ContentPath
         /// </summary>
-        [Required]
-        public string Studio { get; set; } = null!;
+        public string? ContentPath { get; set; }
 
         /// <summary>
-        /// Gets or Sets MovieUrl
+        /// Gets or Sets EpisodesCount
         /// </summary>
-        public string MovieUrl { get; set; } = null!;
+        public string? EpisodesCount { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets MovieId
+        /// Gets or Sets NextEpisodeDate
         /// </summary>
-        public string MovieId { get; set; } = null!;
+        public DateTime? NextEpisodeDate { get; set; }
 
         /// <summary>
         /// Gets or Sets Episodes
         /// </summary>
-        public List<EpisodeDto> Episodes { get; set; } = null!;
+        public List<Episode>? Episodes { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Studio
+        /// </summary>
+        [Required]
+        public string Studio { get; set; } = null!;
     }
 }

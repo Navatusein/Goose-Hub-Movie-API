@@ -1,13 +1,31 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace MovieApi.Dto
+namespace MovieApi.Dtos
 {
     /// <summary>
-    /// Model for errors
+    /// Model for error responses
     /// </summary>
     public class ErrorDto
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ErrorDto(string message, string code)
+        {
+            Id = Guid.NewGuid().ToString();
+            Message = message;
+            Code = code;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ErrorDto()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         /// <summary>
         /// Gets or Sets Id
         /// </summary>

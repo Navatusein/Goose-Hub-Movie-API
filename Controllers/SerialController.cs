@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MovieApi.Dto;
+using MovieApi.Dtos;
+using MovieApi.Models;
 using MovieApi.Service;
+using MovieApi.Services.DataServices;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
@@ -10,13 +13,25 @@ using System.Data;
 namespace MovieApi.Controllers
 {
     /// <summary>
-    /// 
+    /// Serial Controller
     /// </summary>
-    [Route("api/movie-api/v1/serial")]
+    [Route("v1/serial")]
     [ApiController]
     public class SerialController : ControllerBase
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<SerialController>();
+
+        private readonly IMapper _mapper;
+        private readonly SerialService _dataService;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public SerialController(IMapper mapper, SerialService dataService)
+        {
+            _mapper = mapper;
+            _dataService = dataService;
+        }
 
         /// <summary>
         /// Get Serial By Id
@@ -30,13 +45,14 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> Get([FromRoute(Name = "id")][Required] string id)
         {
+            var model = await _dataService.GetByIdAsync(id);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(SerialDto));
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404, default(ErrorDto));
+            if (model == null)
+                return StatusCode(404, new ErrorDto("Serial not found", "404"));
 
-            throw new NotImplementedException();
+            var dto = _mapper.Map<SerialDto>(model);
+
+            return StatusCode(200, dto);
         }
 
         /// <summary>
@@ -51,11 +67,10 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 201, type: typeof(SerialDto), description: "Created")]
         public async Task<IActionResult> Post([FromBody] SerialDto serialDto)
         {
+            var model = await _dataService.CreateAsync(_mapper.Map<Serial>(serialDto));
+            var dto = _mapper.Map<SerialDto>(model);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(201, default(SerialDto));
-
-            throw new NotImplementedException();
+            return StatusCode(201, model);
         }
 
         /// <summary>
@@ -74,13 +89,14 @@ namespace MovieApi.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> Put([FromRoute(Name = "id")][Required] string id, [FromBody] SerialDto serialDto)
         {
+            var model = await _dataService.UpdateAsync(id, _mapper.Map<Serial>(serialDto));
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(SerialDto));
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404, default(ErrorDto));
+            if (model == null)
+                return StatusCode(404, new ErrorDto("Serial not found", "404"));
 
-            throw new NotImplementedException();
+            var dto = _mapper.Map<SerialDto>(model);
+
+            return StatusCode(200, dto);
         }
 
         /// <summary>
@@ -94,15 +110,15 @@ namespace MovieApi.Controllers
         [HttpDelete]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
+        [SwaggerResponse(statusCode: 200, description: "OK")]
         public async Task<IActionResult> Delete([FromRoute(Name = "id")][Required] string id)
         {
+            var isDeleted = await _dataService.DeleteAsync(id);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
+            if (!isDeleted)
+                return StatusCode(404, new ErrorDto("Serial not found", "404"));
 
-            throw new NotImplementedException();
+            return StatusCode(200);
         }
     }
 }
