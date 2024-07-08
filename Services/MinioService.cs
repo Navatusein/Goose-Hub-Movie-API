@@ -25,7 +25,6 @@ namespace MovieApi.Service
         /// </summary>
         public MinioService(IConfiguration config)
         {
-            var endpoint = config.GetSection("MinIO:Endpoint").Get<string>();
             var useSsl = config.GetSection("MinIO:UseSSL").Get<bool>();
             var region = config.GetSection("MinIO:Region").Get<string>();
             var accessKey = config.GetSection("MinIO:AccessKey").Get<string>();
@@ -37,7 +36,7 @@ namespace MovieApi.Service
             _contentBucket = config.GetSection("MinIO:ContentBucket").Get<string>()!;
 
             _minioClient = new MinioClient()
-                .WithEndpoint(new Uri(endpoint!))
+                .WithEndpoint(new Uri(_endpoint))
                 .WithCredentials(accessKey, secretKey)
                 .WithRegion(region)
                 .WithSSL(useSsl)
