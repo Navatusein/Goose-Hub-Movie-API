@@ -37,7 +37,7 @@ namespace MovieApi.Service
             _contentBucket = config.GetSection("MinIO:ContentBucket").Get<string>()!;
 
             _minioClient = new MinioClient()
-                .WithEndpoint(endpoint)
+                .WithEndpoint(new Uri(endpoint!))
                 .WithCredentials(accessKey, secretKey)
                 .WithRegion(region)
                 .WithSSL(useSsl)
