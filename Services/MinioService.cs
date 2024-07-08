@@ -56,7 +56,7 @@ namespace MovieApi.Service
 
             //var presignedUrl = await _minioClient.PresignedGetObjectAsync(presignedGetObjectArgs).ConfigureAwait(false);
 
-            var presignedUrl = $"https://{_endpoint}/{bucketName}/{objectPath}";
+            var presignedUrl = $"{_endpoint}/{bucketName}/{objectPath}";
 
             return presignedUrl;
         }
